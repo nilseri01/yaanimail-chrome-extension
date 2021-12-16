@@ -1,5 +1,3 @@
-/*global chrome*/
-
 class UtilsService {
   /*
   static saveToLocalStorage(key, value) {

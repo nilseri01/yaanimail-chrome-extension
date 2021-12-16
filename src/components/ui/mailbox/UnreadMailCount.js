@@ -11,6 +11,7 @@ function UnreadMailCount() {
 
   useEffect(() => {
     setIsLoading(true);
+    chrome.action.setBadgeText({ text: '' });
     HttpHeadersService.getAuthHeaders().then((headers) => {
       axios
         .get(UtilsService.getGatewayApiUrl() + '/emails/folders/all', {
@@ -22,6 +23,9 @@ function UnreadMailCount() {
           let inbox = response.data.filter((f) => f.id == 2);
           if (inbox && inbox.length > 0) {
             setUnreadEmailCount(inbox[0].unread);
+            chrome.action.setBadgeText({
+              text: `${inbox[0].unread > 999 ? '+999' : inbox[0].unread}`
+            });
           }
         })
         .catch((error) => {

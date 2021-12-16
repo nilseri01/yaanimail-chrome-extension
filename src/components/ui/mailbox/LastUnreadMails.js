@@ -9,8 +9,6 @@ import moment from 'moment/moment.js';
 import classes from './Mailbox.module.css';
 import iconMail from '../../../assets/img/icon-mail.png';
 
-/*global chrome*/
-
 function LastUnreadMails(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [lastUnreadMails, setLastUnreadMails] = useState([]);

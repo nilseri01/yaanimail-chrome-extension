@@ -1,46 +1,91 @@
-import { fetchRepositories, saveToLocalStorage } from './lib/helpers';
-
-// create alarm for watchdog and fresh on installed/updated, and start fetch data
 chrome.runtime.onInstalled.addListener(() => {
   scheduleRequest();
-  scheduleWatchdog();
   startRequest();
 });
 
-// fetch and save data when chrome restarted, alarm will continue running when chrome is restarted
 chrome.runtime.onStartup.addListener(() => {
   startRequest();
 });
 
-// alarm listener
 chrome.alarms.onAlarm.addListener((alarm) => {
-  // if watchdog is triggered, check whether refresh alarm is there
-  if (alarm && alarm.name === 'watchdog') {
-    chrome.alarms.get('refresh', (alarm) => {
-      if (!alarm) {
-        // if it is not there, start a new request and reschedule refresh alarm
-        startRequest();
-        scheduleRequest();
-      }
-    });
-  } else {
-    // if refresh alarm triggered, start a new request
-    startRequest();
-  }
+  startRequest();
 });
 
-// schedule a new fetch every 30 minutes
-function scheduleRequest() {
-  chrome.alarms.create('refresh', { periodInMinutes: 3 });
-}
+scheduleRequest = () => {
+  chrome.alarms.create('refresh', { periodInMinutes: 1 });
+};
 
-// schedule a watchdog check every 5 minutes
-function scheduleWatchdog() {
-  chrome.alarms.create('watchdog', { periodInMinutes: 5 });
-}
+startRequest = () => {
+  chrome.action.setBadgeText({ text: '' });
+  getAuthHeaders()
+    .then((headers) => {
+      if (Object.keys(headers).length !== 0) {
+        fetch('https://capi.yaanimail.com/gateway/v1/emails/folders/all', {
+          method: 'GET',
+          headers: headers
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            let inbox = data.filter((f) => f.id == 2);
+            if (inbox && inbox.length > 0) {
+              chrome.action.setBadgeText({ text: `${inbox[0].unread}` });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            // TODO: NilS error objesi?
+            console.log(error.error.message);
+          });
+      }
+    })
+    .catch((error) => console.log(error));
+};
 
-// fetch data and save to local storage
-async function startRequest() {
-  const data = await fetchRepositories();
-  saveToLocalStorage(data);
-}
+getAuthHeaders = () => {
+  return Promise.all([getUserToken(), getDeviceId()])
+    .then((values) => {
+      if (values.length == 2) {
+        // TODO: NilS
+        let headers = {
+          Authorization: 'Bearer ' + values[0],
+          'App-Version': '1.0',
+          'Device-Language': 'en-US',
+          'Device-Name': 'WEB',
+          'Device-ID': values[1]
+        };
+        return headers;
+      } else {
+        return {};
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+getUserToken = () => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get('ym@user', (user) => {
+      if (Object.keys(user).length !== 0) {
+        const userObj = JSON.parse(user['ym@user']);
+        resolve(userObj.access_token);
+      } else {
+        reject();
+      }
+    });
+  });
+};
+
+getDeviceId = () => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get('y@uuid', (uuid) => {
+      if (Object.keys(uuid).length !== 0) {
+        resolve(uuid['y@uuid']);
+      } else {
+        reject();
+      }
+    });
+  });
+};

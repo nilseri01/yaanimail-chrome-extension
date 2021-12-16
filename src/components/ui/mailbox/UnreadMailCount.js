@@ -21,8 +21,13 @@ function UnreadMailCount() {
           setIsLoading(false);
           let inbox = response.data.filter((f) => f.id == 2);
           if (inbox && inbox.length > 0) {
-            setUnreadEmailCount(inbox[0].mail_count);
+            setUnreadEmailCount(inbox[0].unread);
           }
+        })
+        .catch((error) => {
+          console.log(error);
+          // TODO: NilS error objesi?
+          console.log(error.error.message);
         });
     });
   }, []);

@@ -15,8 +15,9 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    //  + '@yaani.com'
     let loginInfo = {
-      email: username + '@yaani.com',
+      email: username,
       password: password,
       details: 1
     };
@@ -48,6 +49,8 @@ function Login() {
     });
   };
 
+  // <InputGroup.Text id="basic-addon2">@yaani.com</InputGroup.Text>
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="d-flex flex-column py-2">
@@ -59,7 +62,6 @@ function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <InputGroup.Text id="basic-addon2">@yaani.com</InputGroup.Text>
         </InputGroup>
         <InputGroup size="sm" className="mb-3">
           <InputGroup.Text id="inputGroup-sizing-sm">Password</InputGroup.Text>

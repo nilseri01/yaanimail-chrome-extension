@@ -16,7 +16,6 @@ scheduleRequest = () => {
 };
 
 startRequest = () => {
-  chrome.action.setBadgeText({ text: '' });
   getAuthHeaders()
     .then((headers) => {
       if (Object.keys(headers).length !== 0) {
@@ -29,18 +28,23 @@ startRequest = () => {
           })
           .then((data) => {
             let inbox = data.filter((f) => f.id == 2);
-            if (inbox && inbox.length > 0) {
+            chrome.action.setBadgeText({ text: '' });
+            if (inbox && inbox.length > 0 && inbox[0].unread !== 0) {
               chrome.action.setBadgeText({ text: `${inbox[0].unread}` });
             }
           })
           .catch((error) => {
+            chrome.action.setBadgeText({ text: '' });
             console.log(error);
             // TODO: NilS error objesi?
             console.log(error.error.message);
           });
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      chrome.action.setBadgeText({ text: '' });
+      console.log(error);
+    });
 };
 
 getAuthHeaders = () => {

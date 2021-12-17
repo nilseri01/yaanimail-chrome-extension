@@ -14,6 +14,7 @@ function Logout() {
 
   const handleLogout = (event) => {
     setIsLoading(true);
+    chrome.action.setBadgeText({ text: '' });
     HttpHeadersService.getAuthHeaders().then((headers) => {
       axios
         .delete(UtilsService.getGatewayApiUrl() + '/accounts/logout', {

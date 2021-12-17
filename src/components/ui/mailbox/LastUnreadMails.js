@@ -22,6 +22,7 @@ function LastUnreadMails(props) {
       },
       function (tab) {
         // Tab opened.
+        // TODO: NilS refresh badge
         /*
         chrome.tabs.executeScript(
           tab.id,

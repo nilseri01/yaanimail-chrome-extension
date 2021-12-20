@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import HttpHeadersService from '../../../services/HttpHeadersService';
-import UtilsService from '../../../services/UtilsService';
+import MailboxService from '../../../services/MailboxService';
 import { Card, Spinner } from 'react-bootstrap';
 import moment from 'moment/moment.js';
 import classes from './Mailbox.module.css';
 import iconMail from '../../../assets/img/icon-mail.png';
+import { useTranslation } from 'react-i18next';
 
 function LastUnreadMails(props) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [lastUnreadMails, setLastUnreadMails] = useState([]);
 
@@ -48,21 +48,31 @@ function LastUnreadMails(props) {
 
   useEffect(() => {
     setIsLoading(true);
-    HttpHeadersService.getAuthHeaders().then((headers) => {
-      axios
-        .get(
-          UtilsService.getGatewayApiUrl() +
-            '/emails/messages?folder=inbox&limit=5&message_listing_type=message&offset=0&order=date&order_type=desc&flag=false&unread=true&attachment=false&search=*',
-          {
-            headers: headers
-          }
-        )
-        .then((response) => {
-          // TODO: NilS
-          setIsLoading(false);
-          setLastUnreadMails(response.data);
-        });
-    });
+    let data = {
+      folder: 'inbox',
+      limit: 5,
+      message_listing_type: 'message',
+      offset: 0,
+      order: 'date',
+      order_type: 'desc',
+      flag: false,
+      unread: true,
+      attachment: false,
+      search: '*'
+    };
+    MailboxService.getMails(data)
+      .then((response) => {
+        setIsLoading(false);
+        setLastUnreadMails(response.data);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+        // TODO: NilS error objesi?
+        if (error && error.data) {
+          console.log(t(error.data.message));
+        }
+      });
   }, []);
 
   return (

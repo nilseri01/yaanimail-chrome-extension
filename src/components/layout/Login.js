@@ -5,8 +5,12 @@ import { connect, useDispatch } from 'react-redux';
 import { setAuthedUser } from '../../actions/authedUser';
 import HttpHeadersService from '../../services/HttpHeadersService';
 import UtilsService from '../../services/UtilsService';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Login() {
+  const { t } = useTranslation();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -42,9 +46,9 @@ function Login() {
           });
         })
         .catch((error) => {
-          console.log(error);
           // TODO: NilS error objesi?
-          console.log(error.error.message);
+          console.log(error.message);
+          toast.error(error.message);
         });
     });
   };
@@ -64,10 +68,12 @@ function Login() {
           />
         </InputGroup>
         <InputGroup size="sm" className="mb-3">
-          <InputGroup.Text id="inputGroup-sizing-sm">Password</InputGroup.Text>
+          <InputGroup.Text id="inputGroup-sizing-sm">
+            {t('PASSWORD')}
+          </InputGroup.Text>
           <FormControl
-            placeholder="Password"
-            aria-label="Password"
+            placeholder={t('PASSWORD')}
+            aria-label={t('PASSWORD')}
             aria-describedby="inputGroup-sizing-sm"
             type="password"
             value={password}
@@ -76,10 +82,11 @@ function Login() {
         </InputGroup>
         <div>
           <Button variant="primary" className="float-end" type="submit">
-            Login
+            {t('LOGIN')}
           </Button>
         </div>
       </div>
+      <ToastContainer position="bottom-left" autoClose={1500} closeOnClick />
     </form>
   );
 }

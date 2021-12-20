@@ -1,5 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from './components/layout/Layout';
 import MailboxContainer from './components/ui/mailbox/MailboxContainer';
 

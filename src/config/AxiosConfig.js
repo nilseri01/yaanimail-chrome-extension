@@ -1,0 +1,52 @@
+import axios from 'axios';
+import i18n from 'i18next';
+import UtilsService from '../services/UtilsService';
+import { logout } from '../actions/authedUser';
+import { useDispatch } from 'react-redux';
+
+const createErrorMessage = (error) => {
+  let errorCode = error?.error?.message;
+  if (errorCode && i18n.exists(errorCode)) {
+    return i18n.t(errorCode);
+  } else {
+    return error.error.message;
+  }
+};
+
+const API_CONFIG = axios.create({
+  baseURL: process.env.REACT_APP_GATEWAY_API_URL
+});
+
+API_CONFIG.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      /*
+      const language = localStorage.getItem('lang');
+      localStorage.clear();
+      if (language) {
+        localStorage.setItem('lang', language);
+      }
+      */
+      // TODO: NilS logout
+      return new Promise((resolve, reject) => {
+        UtilsService.saveToLocalStorage('ym@user', null)
+          .then((response) => {
+            useDispatch(logout());
+            resolve(response);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    } else {
+      error.response.message = createErrorMessage(error.response);
+      return Promise.reject(error);
+    }
+  }
+);
+
+export { API_CONFIG };

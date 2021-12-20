@@ -6,8 +6,12 @@ import { setAuthedUser } from '../../actions/authedUser';
 import { logout } from '../../actions/authedUser';
 import HttpHeadersService from '../../services/HttpHeadersService';
 import UtilsService from '../../services/UtilsService';
+import LoginService from '../../services/LoginService';
+import { useTranslation } from 'react-i18next';
 
 function Logout() {
+  const { t } = useTranslation();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useDispatch();
@@ -15,30 +19,23 @@ function Logout() {
   const handleLogout = (event) => {
     setIsLoading(true);
     chrome.action.setBadgeText({ text: '' });
-    HttpHeadersService.getAuthHeaders().then((headers) => {
-      axios
-        .delete(UtilsService.getGatewayApiUrl() + '/accounts/logout', {
-          headers: headers
-        })
-        .then(() => {
-          // TODO: NilS
-          // UtilsService.removeFromLocalStorage('ym@user');
-          UtilsService.saveToLocalStorage('ym@user', null).then(() => {
-            setIsLoading(false);
-            dispatch(logout());
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          // TODO: NilS error objesi?
-          console.log(error.error.message);
+    LoginService.logout()
+      .then(() => {
+        UtilsService.saveToLocalStorage('ym@user', null).then(() => {
+          setIsLoading(false);
+          dispatch(logout());
         });
-    });
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+        // TODO: NilS error objesi?
+      });
   };
 
   return (
     <Button variant="danger" onClick={handleLogout}>
-      Logout
+      {t('LOGOUT')}
     </Button>
   );
 }

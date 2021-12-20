@@ -114,7 +114,7 @@ function LastUnreadMails(props) {
             <img src={iconMail} alt="Login" className="not-found-image" />
           </div>
           <p class="text-center text-primary fw-bold fs-6">
-            No unread e-mails...
+            {t('NO_UNREAD_MAILS')}
           </p>
         </div>
       )}

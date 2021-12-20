@@ -38,7 +38,7 @@ function UnreadMailCount() {
 
   return (
     <Button variant="primary">
-      Unread{' '}
+      {t('UNREAD')}{' '}
       {isLoading ? (
         <Spinner
           as="span"
@@ -52,7 +52,7 @@ function UnreadMailCount() {
           {unreadEmailCount > 999 ? '+999' : unreadEmailCount}
         </Badge>
       )}
-      <span className="visually-hidden">Unread E-Mail Count</span>
+      <span className="visually-hidden">{t('UNREAD_MAIL_COUNT')}</span>
     </Button>
   );
 }

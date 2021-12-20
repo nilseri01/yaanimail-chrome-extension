@@ -1,5 +1,9 @@
 {
+  "E-MAIL": "E-mail",
   "PASSWORD": "Password",
   "LOGIN": "Login",
-  "LOGOUT": "Logout"
+  "LOGOUT": "Logout",
+  "NO_UNREAD_MAILS": "No unread e-mails...",
+  "UNREAD": "Unread",
+  "UNREAD_MAIL_COUNT": "Unread E-Mail Count"
 }

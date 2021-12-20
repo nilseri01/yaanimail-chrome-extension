@@ -34,10 +34,6 @@ function Login() {
         .then((response) => {
           // TODO: NilS
           setIsLoading(false);
-          /* UtilsService.saveToLocalStorage(
-            'ym@user',
-            JSON.stringify(response.data)
-          ); */
           UtilsService.saveToLocalStorage(
             'ym@user',
             JSON.stringify(response.data)
@@ -60,8 +56,8 @@ function Login() {
       <div className="d-flex flex-column py-2">
         <InputGroup size="sm" className="mb-3">
           <FormControl
-            placeholder="E-mail"
-            aria-label="E-mail"
+            placeholder={t('E-MAIL')}
+            aria-label={t('E-MAIL')}
             aria-describedby="basic-addon2"
             value={username}
             onChange={(e) => setUsername(e.target.value)}

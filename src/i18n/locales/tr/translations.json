@@ -1,5 +1,9 @@
 {
+  "E-MAIL": "E-posta",
   "PASSWORD": "Şifre",
   "LOGIN": "Giriş",
-  "LOGOUT": "Çıkış"
+  "LOGOUT": "Çıkış",
+  "NO_UNREAD_MAILS": "Okunmamış mail yoktur...",
+  "UNREAD": "Okunmamış",
+  "UNREAD_MAIL_COUNT": "Okunmamış mail sayısı"
 }

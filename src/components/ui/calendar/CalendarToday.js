@@ -1,12 +1,21 @@
 import { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import CalendarService from '../../../services/CalendarService';
-import { Spinner, Table, Card, Badge } from 'react-bootstrap';
+import { Spinner, Card, Badge } from 'react-bootstrap';
+import Linkify from 'linkify-react';
 import moment from 'moment/moment.js';
 import 'moment/locale/tr';
 import { useTranslation } from 'react-i18next';
 import classes from './Calendar.module.css';
 import iconMail from '../../../assets/img/icon-mail.png';
+
+const linkProps = {
+  onClick: (event) => {
+    chrome.tabs.create({
+      url: event.target.href
+    });
+  }
+};
 
 const checkIsLongEvent = (appointment) => {
   const start = new Date(appointment.invitation_date);
@@ -36,7 +45,8 @@ const formatEvents = (appointments) => {
         title: appointment.subject,
         start: moment(startDate.toString()).format('DD-MM-YYYY'),
         end: moment(endDate.toString()).add(1, 'days').format('DD-MM-YYYY'),
-        id: appointment.appointment_id
+        id: appointment.appointment_id,
+        location: appointment.location
       };
     } else {
       formattedAppointment = {
@@ -44,11 +54,13 @@ const formatEvents = (appointments) => {
         start: moment(startDate.toString()).format('DD-MM-YYYY HH:mm'),
         end: moment(endDate.toString()).format('DD-MM-YYYY HH:mm'),
         id: appointment.appointment_id,
+        location: appointment.location,
         allDay: appointment.all_day === 1 ? true : false
       };
     }
     formattedAppointments.push(formattedAppointment);
   }
+  formattedAppointments.sort((a, b) => (a.start < b.start ? -1 : 1));
   return formattedAppointments;
 };
 
@@ -110,6 +122,11 @@ function CalendarToday(props) {
               </Card.Header>
               <Card.Body>
                 <Card.Text>{event.title}</Card.Text>
+                <Card.Text>
+                  <Linkify options={{ attributes: linkProps }}>
+                    {event.location}
+                  </Linkify>
+                </Card.Text>
               </Card.Body>
             </Card>
           </div>

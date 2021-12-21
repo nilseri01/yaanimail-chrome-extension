@@ -96,7 +96,7 @@ function LastUnreadMails(props) {
                     ? f.full_name
                     : f.first_name
                 )}{' '}
-                - {moment.unix(mail.time).format('MMMM Do YYYY, h:mm:ss a')}
+                - {moment.unix(mail.time).format('Do MMMM YYYY, hh:mm:ss')}
               </Card.Header>
               <Card.Body>
                 <Card.Text className="fw-bold">{mail.subject}</Card.Text>

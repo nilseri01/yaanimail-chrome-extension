@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { setView } from '../../actions/view';
+import UtilsService from '../../services/UtilsService';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faEnvelope } from '@fortawesome/free-solid-svg-icons';
@@ -12,9 +14,11 @@ function Toolbar(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const handleChangeView = (selectedView) => {
-    dispatch(setView(selectedView));
-  };
+  const handleChangeView = useCallback((selectedView) => {
+    UtilsService.saveToLocalStorage('ym@view', selectedView).then((view) => {
+      dispatch(setView(view));
+    });
+  }, []);
 
   return (
     <ButtonToolbar

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { connect, useDispatch } from 'react-redux';
 import { setAuthedUser } from '../../actions/authedUser';
+import { setView } from '../../actions/view';
 import HttpHeadersService from '../../services/HttpHeadersService';
 import UtilsService from '../../services/UtilsService';
 import { useTranslation } from 'react-i18next';
@@ -34,12 +35,12 @@ function Login() {
         .then((response) => {
           // TODO: NilS
           setIsLoading(false);
-          UtilsService.saveToLocalStorage(
-            'ym@user',
-            JSON.stringify(response.data)
-          ).then((data) => {
+          UtilsService.saveMultipleToLocalStorage({
+            'ym@user': JSON.stringify(response.data),
+            'ym@view': 'inbox'
+          }).then((data) => {
             dispatch(setAuthedUser(data));
-            // dispatch(setView('inbox'));
+            dispatch(setView('inbox'));
           });
         })
         .catch((error) => {

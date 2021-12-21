@@ -4,6 +4,12 @@ import MailboxService from '../../../services/MailboxService';
 import { Button, Badge, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
+const handleRouteToInbox = () => {
+  chrome.tabs.create({
+    url: 'https://kurumsal.yaanimail.com'
+  });
+};
+
 function UnreadMailCount() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +43,7 @@ function UnreadMailCount() {
   }, []);
 
   return (
-    <Button variant="primary">
+    <Button variant="primary" onClick={handleRouteToInbox}>
       {t('UNREAD')}{' '}
       {isLoading ? (
         <Spinner

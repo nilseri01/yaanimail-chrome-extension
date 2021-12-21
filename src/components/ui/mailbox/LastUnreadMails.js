@@ -14,7 +14,7 @@ function LastUnreadMails(props) {
   const [lastUnreadMails, setLastUnreadMails] = useState([]);
 
   // url: chrome.runtime.getURL('https://www.google.com/')
-  function handleRouteToMail(emailId) {
+  const handleRouteToMail = (emailId) => {
     let emailUrl = `https://kurumsal.yaanimail.com/m/${props.accountMail}/PRIMARY/inbox/single/${emailId}/details`;
     chrome.tabs.create(
       {
@@ -44,7 +44,7 @@ function LastUnreadMails(props) {
       }
     );
     */
-  }
+  };
 
   useEffect(() => {
     setIsLoading(true);

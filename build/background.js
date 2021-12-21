@@ -74,8 +74,10 @@ getUserToken = () => {
     chrome.storage.sync.get('ym@user', (user) => {
       if (Object.keys(user).length !== 0) {
         const userObj = JSON.parse(user['ym@user']);
-        console.log('a ,', userObj);
-        resolve(userObj.access_token);
+        if (userObj) {
+          resolve(userObj.access_token);
+        }
+        // TODO: NilS else
       } else {
         reject();
       }

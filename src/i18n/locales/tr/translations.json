@@ -3,7 +3,8 @@
   "PASSWORD": "Şifre",
   "LOGIN": "Giriş",
   "LOGOUT": "Çıkış",
-  "NO_UNREAD_MAILS": "Okunmamış mail yoktur...",
+  "NO_UNREAD_MAILS": "Okunmamış mail bulunmamaktadır...",
   "UNREAD": "Okunmamış",
-  "UNREAD_MAIL_COUNT": "Okunmamış mail sayısı"
+  "UNREAD_MAIL_COUNT": "Okunmamış mail sayısı",
+  "WELCOME": "Hoşgeldin"
 }

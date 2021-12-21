@@ -39,6 +39,7 @@ function Login() {
             JSON.stringify(response.data)
           ).then((data) => {
             dispatch(setAuthedUser(data));
+            // dispatch(setView('inbox'));
           });
         })
         .catch((error) => {

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { handleInitialData } from '../../actions/shared';
 import { useTranslation } from 'react-i18next';
+import Toolbar from './Toolbar';
 
 // className={classes.main}
 
@@ -22,6 +23,7 @@ function Layout(props) {
   return (
     <div>
       <Header />
+      {props.isLoggedIn && <Toolbar />}
       <main className={classes.main}>{props.children}</main>
     </div>
   );
@@ -29,7 +31,11 @@ function Layout(props) {
 
 function mapStateToProps({ authedUser }) {
   return {
-    language: authedUser ? authedUser.language : 'tr'
+    isLoggedIn: !!authedUser,
+    language:
+      authedUser && (authedUser.language || '').length > 0
+        ? authedUser.language
+        : 'tr'
   };
 }
 

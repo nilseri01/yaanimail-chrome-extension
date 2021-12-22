@@ -29,8 +29,7 @@ function Toolbar(props) {
       <div className={`d-flex flex-column ms-2 ${classes.toolbar_container}`}>
         <div className="text-truncate">
           <span className="me-1">
-            {t('WELCOME')} jgfsjhghjsghjdgajdgajdhgad jasghdjashdgashjdgadsh
-            jahgsdajhgdasjdhagsd jhagdjahgdasjhdg jahgdajhgd
+            {t('WELCOME')}{' '}
             {props.authedUser.name
               ? props.authedUser.name
               : props.authedUser.client_id}

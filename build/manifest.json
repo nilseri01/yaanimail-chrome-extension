@@ -3,7 +3,7 @@
   "description": "YaaniMail Chrome Extension",
   "version": "1.0",
   "manifest_version": 3,
-  "keywords": ["react", "browser extension", "chrome extension"],
+  "keywords": ["react", "browser extension", "chrome extension", "yaanimail"],
   "permissions": [
     "http://api.yaanimail.com/*",
     "storage",

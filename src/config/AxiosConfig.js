@@ -23,14 +23,6 @@ API_CONFIG.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      /*
-      const language = localStorage.getItem('lang');
-      localStorage.clear();
-      if (language) {
-        localStorage.setItem('lang', language);
-      }
-      */
-      // TODO: NilS logout
       return new Promise((resolve, reject) => {
         UtilsService.saveToLocalStorage('ym@user', null)
           .then((response) => {

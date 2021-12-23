@@ -1,18 +1,4 @@
 class UtilsService {
-  /*
-  static saveToLocalStorage(key, value) {
-    localStorage.setItem(key, value);
-  }
-
-  static getFromLocalStorage(key) {
-    return localStorage.getItem(key);
-  }
-
-  static removeFromLocalStorage(key) {
-    localStorage.removeItem(key);
-  }
-  */
-
   static saveMultipleToLocalStorage = (data) => {
     return new Promise((resolve, reject) => {
       chrome.storage.sync.set(data, () => {

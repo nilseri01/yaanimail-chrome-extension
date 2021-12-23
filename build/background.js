@@ -20,6 +20,7 @@ startRequest = () => {
     .then((headers) => {
       if (Object.keys(headers).length !== 0) {
         fetch('https://capi.yaanimail.com/gateway/v1/emails/folders/all', {
+          //fetch('https://api.yaanimail.com/gateway/v1/emails/folders/all', {
           method: 'GET',
           headers: headers
         })

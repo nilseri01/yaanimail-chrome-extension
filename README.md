@@ -6,7 +6,7 @@ This is an ongoing Chrome Extension project developed with React, Redux and Boot
 
 ## Screenshots
 
-![ScreenShot](https://raw.github.com/nilseri01/yaanimail-chrome-extension/enterprise-v4/screenshots/extension-pages.png)
+![ScreenShot](https://raw.githubusercontent.com/nilseri01/yaanimail-chrome-extension/master/screenshots/add_extension_to_chrome.png)
 
 ## How to Build:
 
@@ -39,7 +39,7 @@ After that, three buttons appear on the left. By clicking "Load unpacked" button
 
 Under "extensions" (chrome://extensions/), you should be able to see your extension. You can also pin it to keep it in the toolbar.
 
-![ScreenShot](https://raw.github.com/nilseri01/yaanimail-chrome-extension/enterprise-v4/screenshots/add-extension-to-chrome.png)
+![ScreenShot](https://raw.githubusercontent.com/nilseri01/yaanimail-chrome-extension/master/screenshots/add-extension-to-chrome.png)
 
 ## Usage
 

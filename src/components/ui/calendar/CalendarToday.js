@@ -140,7 +140,7 @@ function CalendarToday(props) {
             <img src={iconMail} alt="Login" className="not-found-image" />
           </div>
           <p class="text-center text-primary fw-bold fs-6">
-            {t('NO_UNREAD_MAILS')}
+            {t('NO_APPOINTMENTS_TODAY')}
           </p>
         </div>
       )}

@@ -39,7 +39,7 @@ function Login() {
             'ym@user': JSON.stringify(response.data),
             'ym@view': 'inbox'
           }).then((data) => {
-            dispatch(setAuthedUser(data));
+            dispatch(setAuthedUser(JSON.parse(data['ym@user'])));
             dispatch(setView('inbox'));
           });
         })

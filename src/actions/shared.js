@@ -21,13 +21,15 @@ export function getInitialData() {
   return new Promise((resolve, reject) => {
     UtilsService.getMultipleFromLocalStorage(['ym@user', 'ym@view']).then(
       (data) => {
-        let view =
-          (data['ym@view'] || '').length > 0 ? data['ym@view'] : 'inbox';
-        if (Object.keys(data['ym@user']).length !== 0) {
-          resolve({
-            authedUser: JSON.parse(data['ym@user']),
-            selectedView: view
-          });
+        if (data) {
+          let view =
+            (data['ym@view'] || '').length > 0 ? data['ym@view'] : 'inbox';
+          if (data['ym@user'] && Object.keys(data['ym@user']).length !== 0) {
+            resolve({
+              authedUser: JSON.parse(data['ym@user']),
+              selectedView: view
+            });
+          }
         } else {
           resolve({});
         }

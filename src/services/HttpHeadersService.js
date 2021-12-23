@@ -2,8 +2,8 @@ import UtilsService from './UtilsService';
 
 class HttpHeadersService {
   static getAuthHeaders = () => {
-    return Promise.all([this.getUserToken(), this.getDeviceId()]).then(
-      (values) => {
+    return Promise.all([this.getUserToken(), this.getDeviceId()])
+      .then((values) => {
         if (values.length == 2) {
           // TODO: NilS
           let headers = {
@@ -14,9 +14,13 @@ class HttpHeadersService {
             'Device-ID': values[1]
           };
           return headers;
+        } else {
+          return {};
         }
-      }
-    );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   static getNonAuthHeaders = () => {

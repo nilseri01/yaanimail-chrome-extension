@@ -28,6 +28,8 @@
 /libpeerconnection.log
 testem.log
 /typings
+/yarn.lock
+/package-lock.json
 
 # System Files
 Thumbs.db

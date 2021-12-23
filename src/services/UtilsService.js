@@ -1,19 +1,11 @@
-/*global chrome*/
-
 class UtilsService {
-  /*
-  static saveToLocalStorage(key, value) {
-    localStorage.setItem(key, value);
-  }
-
-  static getFromLocalStorage(key) {
-    return localStorage.getItem(key);
-  }
-
-  static removeFromLocalStorage(key) {
-    localStorage.removeItem(key);
-  }
-  */
+  static saveMultipleToLocalStorage = (data) => {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.set(data, () => {
+        resolve(data);
+      });
+    });
+  };
 
   static saveToLocalStorage = (key, value) => {
     return new Promise((resolve, reject) => {
@@ -21,6 +13,18 @@ class UtilsService {
       obj[key] = value;
       chrome.storage.sync.set(obj, () => {
         resolve(value);
+      });
+    });
+  };
+
+  static getMultipleFromLocalStorage = (keys) => {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(keys, (data) => {
+        if (data) {
+          resolve(data);
+        } else {
+          reject();
+        }
       });
     });
   };

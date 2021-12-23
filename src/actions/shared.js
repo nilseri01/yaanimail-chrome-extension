@@ -1,14 +1,16 @@
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { setAuthedUser } from '../actions/authedUser';
+import { setView } from '../actions/view';
 import UtilsService from '../services/UtilsService';
 
 export function handleInitialData() {
   return (dispatch) => {
     dispatch(showLoading());
-    return getInitialData().then(({ authedUser }) => {
-      if (authedUser) {
-        dispatch(setAuthedUser(authedUser));
+    return getInitialData().then((data) => {
+      if (data.authedUser) {
+        dispatch(setAuthedUser(data.authedUser));
       }
+      dispatch(setView(data.selectedView));
       dispatch(hideLoading());
     });
   };
@@ -17,12 +19,21 @@ export function handleInitialData() {
 export function getInitialData() {
   // const user = UtilsService.getFromLocalStorage('ym@user');
   return new Promise((resolve, reject) => {
-    UtilsService.getFromLocalStorage('ym@user').then((user) => {
-      if (Object.keys(user).length !== 0) {
-        resolve({ authedUser: JSON.parse(user['ym@user']) });
-      } else {
-        resolve({});
+    UtilsService.getMultipleFromLocalStorage(['ym@user', 'ym@view']).then(
+      (data) => {
+        if (data) {
+          let view =
+            (data['ym@view'] || '').length > 0 ? data['ym@view'] : 'inbox';
+          if (data['ym@user'] && Object.keys(data['ym@user']).length !== 0) {
+            resolve({
+              authedUser: JSON.parse(data['ym@user']),
+              selectedView: view
+            });
+          }
+        } else {
+          resolve({});
+        }
       }
-    });
+    );
   });
 }

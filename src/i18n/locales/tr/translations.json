@@ -1,0 +1,11 @@
+{
+  "E-MAIL": "E-posta",
+  "PASSWORD": "Şifre",
+  "LOGIN": "Giriş",
+  "LOGOUT": "Çıkış",
+  "NO_UNREAD_MAILS": "Okunmamış mail bulunmamaktadır...",
+  "UNREAD": "Okunmamış",
+  "UNREAD_MAIL_COUNT": "Okunmamış mail sayısı",
+  "WELCOME": "Hoşgeldin",
+  "NO_APPOINTMENTS_TODAY": "Bugün toplantınız bulunmamaktadır..."
+}

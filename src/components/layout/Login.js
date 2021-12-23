@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { connect, useDispatch } from 'react-redux';
 import { setAuthedUser } from '../../actions/authedUser';
-import HttpHeadersService from '../../services/HttpHeadersService';
+import { setView } from '../../actions/view';
 import UtilsService from '../../services/UtilsService';
+import LoginService from '../../services/LoginService';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Login() {
+  const { t } = useTranslation();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -15,57 +19,53 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    //  + '@yaani.com'
     let loginInfo = {
-      email: username + '@yaani.com',
+      email: username,
       password: password,
       details: 1
     };
     setIsLoading(true);
-    HttpHeadersService.getNonAuthHeaders().then((headers) => {
-      axios
-        .post(UtilsService.getGatewayApiUrl() + '/accounts/login', loginInfo, {
-          headers: headers
-        })
-        .then((response) => {
-          // TODO: NilS
-          setIsLoading(false);
-          /* UtilsService.saveToLocalStorage(
-            'ym@user',
-            JSON.stringify(response.data)
-          ); */
-          UtilsService.saveToLocalStorage(
-            'ym@user',
-            JSON.stringify(response.data)
-          ).then((data) => {
-            dispatch(setAuthedUser(data));
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          // TODO: NilS error objesi?
-          console.log(error.error.message);
+    LoginService.login(loginInfo)
+      .then((response) => {
+        // TODO: NilS
+        setIsLoading(false);
+        UtilsService.saveMultipleToLocalStorage({
+          'ym@user': JSON.stringify(response.data),
+          'ym@view': 'inbox'
+        }).then((data) => {
+          dispatch(setAuthedUser(JSON.parse(data['ym@user'])));
+          dispatch(setView('inbox'));
         });
-    });
+      })
+      .catch((error) => {
+        // TODO: NilS error objesi?
+        console.log(error.message);
+        toast.error(error.message);
+      });
   };
+
+  // <InputGroup.Text id="basic-addon2">@yaani.com</InputGroup.Text>
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="d-flex flex-column py-2">
         <InputGroup size="sm" className="mb-3">
           <FormControl
-            placeholder="E-mail"
-            aria-label="E-mail"
+            placeholder={t('E-MAIL')}
+            aria-label={t('E-MAIL')}
             aria-describedby="basic-addon2"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <InputGroup.Text id="basic-addon2">@yaani.com</InputGroup.Text>
         </InputGroup>
         <InputGroup size="sm" className="mb-3">
-          <InputGroup.Text id="inputGroup-sizing-sm">Password</InputGroup.Text>
+          <InputGroup.Text id="inputGroup-sizing-sm">
+            {t('PASSWORD')}
+          </InputGroup.Text>
           <FormControl
-            placeholder="Password"
-            aria-label="Password"
+            placeholder={t('PASSWORD')}
+            aria-label={t('PASSWORD')}
             aria-describedby="inputGroup-sizing-sm"
             type="password"
             value={password}
@@ -74,10 +74,11 @@ function Login() {
         </InputGroup>
         <div>
           <Button variant="primary" className="float-end" type="submit">
-            Login
+            {t('LOGIN')}
           </Button>
         </div>
       </div>
+      <ToastContainer position="bottom-left" autoClose={1500} closeOnClick />
     </form>
   );
 }

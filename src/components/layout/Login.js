@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { connect, useDispatch } from 'react-redux';
 import { setAuthedUser } from '../../actions/authedUser';
 import { setView } from '../../actions/view';
-import HttpHeadersService from '../../services/HttpHeadersService';
 import UtilsService from '../../services/UtilsService';
+import LoginService from '../../services/LoginService';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -27,28 +26,23 @@ function Login() {
       details: 1
     };
     setIsLoading(true);
-    HttpHeadersService.getNonAuthHeaders().then((headers) => {
-      axios
-        .post(UtilsService.getGatewayApiUrl() + '/accounts/login', loginInfo, {
-          headers: headers
-        })
-        .then((response) => {
-          // TODO: NilS
-          setIsLoading(false);
-          UtilsService.saveMultipleToLocalStorage({
-            'ym@user': JSON.stringify(response.data),
-            'ym@view': 'inbox'
-          }).then((data) => {
-            dispatch(setAuthedUser(JSON.parse(data['ym@user'])));
-            dispatch(setView('inbox'));
-          });
-        })
-        .catch((error) => {
-          // TODO: NilS error objesi?
-          console.log(error.message);
-          toast.error(error.message);
+    LoginService.login(loginInfo)
+      .then((response) => {
+        // TODO: NilS
+        setIsLoading(false);
+        UtilsService.saveMultipleToLocalStorage({
+          'ym@user': JSON.stringify(response.data),
+          'ym@view': 'inbox'
+        }).then((data) => {
+          dispatch(setAuthedUser(JSON.parse(data['ym@user'])));
+          dispatch(setView('inbox'));
         });
-    });
+      })
+      .catch((error) => {
+        // TODO: NilS error objesi?
+        console.log(error.message);
+        toast.error(error.message);
+      });
   };
 
   // <InputGroup.Text id="basic-addon2">@yaani.com</InputGroup.Text>

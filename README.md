@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+# (Unofficial) YaaniMail Chrome Extension
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an ongoing Chrome Extension project developed with React, Redux and Bootstrap. Font Awesome is used for icons in the pages.
 
-## Available Scripts
+<img src="https://img.shields.io/badge/Language-React-blueviolet.svg">
 
-In the project directory, you can run:
+## Screenshots
 
-### `yarn start`
+![ScreenShot](https://raw.github.com/nilseri01/yaanimail-chrome-extension/enterprise-v4/screenshots/extension-pages.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How to Build:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+To install project dependencies:
 
-### `yarn test`
+```
+yarn install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Please ensure API url is the same as defined with REACT_APP_GATEWAY_API_URL key in environments/.env.individual file before build.
+Build for individual version:
 
-### `yarn build`
+```
+yarn build:i
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Please ensure API url is the same as defined with REACT_APP_GATEWAY_API_URL key in environments/.env.enterprise file before build.
+Build for enterprise version:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+yarn build:e
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Prerequisites and Installation
 
-### `yarn eject`
+Chrome browser is required since this is an extension specifically developed for Chrome.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To be able to load your project (after build) to Chrome, you need to enable "Developer mode" on your Chrome under Extensions.
+After that, three buttons appear on the left. By clicking "Load unpacked" button, you are now allowed to select your project's "build" folder.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Under "extensions" (chrome://extensions/), you should be able to see your extension. You can also pin it to keep it in the toolbar.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![ScreenShot](https://raw.github.com/nilseri01/yaanimail-chrome-extension/enterprise-v4/screenshots/add-extension-to-chrome.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Usage
 
-## Learn More
+You can start to use the application after you create your individual account from [YaaniMail](https://www.yaanimail.com/). If you already have an account, you can use it.
+Enterprise version is only available for enterprises using [YaaniMail](https://kurumsal.yaanimail.com/) as their corporate mail service.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Authors / Contributors / Credits
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Nil Seri**
+
+[Github 1](https://github.com/senoritadeveloper01)
+
+[Github 2](https://github.com/nilseri01)
+
+[my Medium profile](https://senoritadeveloper.medium.com/)
+
+You can visit [my Medium post](https://senoritadeveloper.medium.com/) where you can find details about important steps for implementing this project.
+
+## Copyright & Licensing Information
+
+This project is licensed under the terms of the MIT license.

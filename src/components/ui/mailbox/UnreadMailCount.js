@@ -44,7 +44,7 @@ function UnreadMailCount() {
   }, []);
 
   return (
-    <Button variant="primary" onClick={handleRouteToInbox}>
+    <Button variant="primary" onClick={handleRouteToInbox} className="me-2">
       <span className={classes.badge_label}>{t('UNREAD')} </span>
       {isLoading ? (
         <Spinner

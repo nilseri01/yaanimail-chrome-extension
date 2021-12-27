@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import classes from './Mailbox.module.css';
 import MailboxService from '../../../services/MailboxService';
 import { Button, Badge, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +45,7 @@ function UnreadMailCount() {
 
   return (
     <Button variant="primary" onClick={handleRouteToInbox}>
-      {t('UNREAD')}{' '}
+      <span className={classes.badge_label}>{t('UNREAD')} </span>
       {isLoading ? (
         <Spinner
           as="span"

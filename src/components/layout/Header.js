@@ -23,10 +23,10 @@ function Header(props) {
         {props.isLoggedIn === false ? (
           <Login />
         ) : (
-          <Fragment>
+          <div>
             <UnreadMailCount />
             <Logout />
-          </Fragment>
+          </div>
         )}
       </Container>
     </Navbar>

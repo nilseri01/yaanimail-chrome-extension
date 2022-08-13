@@ -35,7 +35,6 @@ function TwoFaAuth(props) {
 
   const sendTwoFaPassword = (event) => {
     event.preventDefault();
-    console.log(props);
     let twoFaInfo = {
       code: props.twoFaUuid,
       password: twoFaCode

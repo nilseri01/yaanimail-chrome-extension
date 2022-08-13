@@ -7,6 +7,12 @@ import moment from 'moment/moment.js';
 import classes from './Mailbox.module.css';
 import iconMail from '../../../assets/img/icon-mail.png';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEnvelopeOpen,
+  faTrashAlt
+} from '@fortawesome/free-regular-svg-icons';
 
 function LastUnreadMails(props) {
   const { t } = useTranslation();
@@ -46,6 +52,39 @@ function LastUnreadMails(props) {
     */
   };
 
+  const markAsRead = (emailId) => {
+    let markAsReadInfo = { message_id: [emailId] };
+    setIsLoading(true);
+    MailboxService.markAsRead(markAsReadInfo)
+      .then((response) => {
+        setIsLoading(false);
+        // reload mails
+        setLastUnreadMails(lastUnreadMails.filter((m) => m.id !== emailId));
+      })
+      .catch((error) => {
+        // TODO: NilS error objesi?
+        console.log(error.message);
+        toast.error(error.message);
+      });
+  };
+
+  const sendToTrash = (emailId) => {
+    let sendToTrashInfo = { message_id: [emailId] };
+    setIsLoading(true);
+    MailboxService.sendToTrash(sendToTrashInfo)
+      .then((response) => {
+        setIsLoading(false);
+        // reload mails
+        setLastUnreadMails(lastUnreadMails.filter((m) => m.id !== emailId));
+        // TODO: NilS buradan silince service worker trigger et
+      })
+      .catch((error) => {
+        // TODO: NilS error objesi?
+        console.log(error.message);
+        toast.error(error.message);
+      });
+  };
+
   useEffect(() => {
     setIsLoading(true);
     let data = {
@@ -73,7 +112,7 @@ function LastUnreadMails(props) {
           console.log(t(error.data.message));
         }
       });
-  }, []);
+  }, [lastUnreadMails.length]);
 
   return (
     <Fragment>
@@ -88,22 +127,43 @@ function LastUnreadMails(props) {
       ) : (
         lastUnreadMails &&
         lastUnreadMails.map((mail) => (
-          <div onClick={() => handleRouteToMail(mail.id)}>
-            <Card border="info">
-              <Card.Header>
-                {mail.from.map((f) =>
-                  f.full_name && f.full_name.length > 0
-                    ? f.full_name
-                    : f.first_name
-                )}{' '}
-                - {moment.unix(mail.time).format('Do MMMM YYYY, hh:mm:ss')}
-              </Card.Header>
-              <Card.Body>
+          <Card border="info">
+            <Card.Header>
+              {mail.from.map((f) =>
+                f.full_name && f.full_name.length > 0
+                  ? f.full_name
+                  : f.first_name
+              )}{' '}
+              - {moment.unix(mail.time).format('Do MMMM YYYY, hh:mm:ss')}
+            </Card.Header>
+            <Card.Body>
+              <div onClick={() => handleRouteToMail(mail.id)}>
                 <Card.Text className="fw-bold">{mail.subject}</Card.Text>
                 <Card.Text>{mail.first_line}</Card.Text>
-              </Card.Body>
-            </Card>
-          </div>
+              </div>
+              <div className="d-flex flex-row justify-content-end">
+                <a
+                  className={`${classes.quick_actions_icon} me-1`}
+                  onClick={() => {
+                    markAsRead(mail.id);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faEnvelopeOpen}
+                    className="text-primary"
+                  />
+                </a>
+                <a
+                  className={classes.quick_actions_icon}
+                  onClick={() => {
+                    sendToTrash(mail.id);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} className="text-primary" />
+                </a>
+              </div>
+            </Card.Body>
+          </Card>
         ))
       )}
       {!isLoading && (!lastUnreadMails || lastUnreadMails.length === 0) && (

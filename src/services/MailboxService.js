@@ -56,6 +56,48 @@ class MailboxService {
         });
     });
   };
+
+  static markAsRead = (data) => {
+    return new Promise((resolve, reject) => {
+      HttpHeadersService.getAuthHeaders()
+        .then((headers) => {
+          API_CONFIG.put('/emails/messages/read', data, {
+            headers: headers
+          })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((error) => {
+              reject(error.response);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  };
+
+  static sendToTrash = (data) => {
+    return new Promise((resolve, reject) => {
+      HttpHeadersService.getAuthHeaders()
+        .then((headers) => {
+          API_CONFIG.put('/emails/messages/trash', data, {
+            headers: headers
+          })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((error) => {
+              reject(error.response);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  };
 }
 
 export default MailboxService;

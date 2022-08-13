@@ -5,3 +5,15 @@
 .badge_label {
   font-size: 12px;
 }
+
+.quick_actions_icon {
+  padding: 4px 7px;
+  border: 1px solid #007bff;
+  border-radius: 50%;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.quick_actions_icon:hover {
+  background-color: white !important;
+}

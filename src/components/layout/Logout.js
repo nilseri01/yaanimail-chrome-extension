@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 function Logout() {
   const { t } = useTranslation();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useDispatch();
 

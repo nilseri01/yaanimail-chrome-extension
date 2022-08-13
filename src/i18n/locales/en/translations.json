@@ -7,5 +7,9 @@
   "UNREAD": "Unread",
   "UNREAD_MAIL_COUNT": "Unread E-Mail Count",
   "WELCOME": "Welcome",
-  "NO_APPOINTMENTS_TODAY": "No meetings today..."
+  "NO_APPOINTMENTS_TODAY": "No meetings today...",
+  "BUTTON_CONTINUE": "Continue",
+  "TWO_FA_HEADER": "Two-factor authentication",
+  "ENTER_CODE_HERE": "Enter the verification code",
+  "BUTTON_CLOSE": "Close"
 }

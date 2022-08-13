@@ -19,8 +19,7 @@ startRequest = () => {
   getAuthHeaders()
     .then((headers) => {
       if (Object.keys(headers).length !== 0) {
-        fetch('https://capi.yaanimail.com/gateway/v1/emails/folders/all', {
-          //fetch('https://api.yaanimail.com/gateway/v1/emails/folders/all', {
+        fetch('https://ymapi.turkcell.com.tr/gateway/v1/emails/folders/all', {
           method: 'GET',
           headers: headers
         })
@@ -66,7 +65,7 @@ getAuthHeaders = () => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
     });
 };
 

@@ -3,7 +3,7 @@ import classes from './Header.module.css';
 import { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Container } from 'react-bootstrap';
-import logo from '../../assets/img/logo.svg';
+import logo from '../../assets/img/logo.png';
 import Login from './Login';
 import Logout from './Logout';
 import UnreadMailCount from './../ui/mailbox/UnreadMailCount';

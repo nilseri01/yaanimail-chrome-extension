@@ -13,7 +13,7 @@ const handleRouteToInbox = () => {
 
 function UnreadMailCount() {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [unreadEmailCount, setUnreadEmailCount] = useState(0);
 
   useEffect(() => {

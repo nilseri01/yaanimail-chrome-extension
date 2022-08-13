@@ -10,12 +10,12 @@ import { useTranslation } from 'react-i18next';
 
 function LastUnreadMails(props) {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [lastUnreadMails, setLastUnreadMails] = useState([]);
 
   // url: chrome.runtime.getURL('https://www.google.com/')
   const handleRouteToMail = (emailId) => {
-    let emailUrl = `https://kurumsal.yaanimail.com/m/${props.accountMail}/PRIMARY/inbox/single/${emailId}/details`;
+    let emailUrl = `https://yaanimail.turkcell.com.tr/m/${props.accountMail}/PRIMARY/inbox/single/${emailId}/details`;
     chrome.tabs.create(
       {
         url: emailUrl

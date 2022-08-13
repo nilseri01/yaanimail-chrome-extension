@@ -23,6 +23,27 @@ class LoginService {
     });
   };
 
+  static sendTwoFaPassword = (data) => {
+    return new Promise((resolve, reject) => {
+      HttpHeadersService.getNonAuthHeaders()
+        .then((headers) => {
+          API_CONFIG.post('/accounts/login/otp-verify', data, {
+            headers: headers
+          })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((error) => {
+              reject(error.response);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  };
+
   static logout = () => {
     return new Promise((resolve, reject) => {
       HttpHeadersService.getAuthHeaders()

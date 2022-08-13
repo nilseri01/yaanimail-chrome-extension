@@ -19,7 +19,7 @@ class HttpHeadersService {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   };
 
@@ -33,6 +33,7 @@ class HttpHeadersService {
           'Device-ID': deviceId
         };
         resolve(headers);
+        // TODO: NilS logo değiştir!!
       });
     });
   };

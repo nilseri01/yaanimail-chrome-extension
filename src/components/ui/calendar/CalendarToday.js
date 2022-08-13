@@ -67,7 +67,7 @@ const formatEvents = (appointments) => {
 function CalendarToday(props) {
   moment.locale(props.language);
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [todaysAppointments, setTodaysAppointments] = useState([]);
 
   useEffect(() => {

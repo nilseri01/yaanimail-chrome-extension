@@ -7,5 +7,9 @@
   "UNREAD": "Okunmamış",
   "UNREAD_MAIL_COUNT": "Okunmamış mail sayısı",
   "WELCOME": "Hoşgeldin",
-  "NO_APPOINTMENTS_TODAY": "Bugün toplantınız bulunmamaktadır..."
+  "NO_APPOINTMENTS_TODAY": "Bugün toplantınız bulunmamaktadır...",
+  "BUTTON_CONTINUE": "Devam",
+  "TWO_FA_HEADER": "İki faktörlü kimlik doğrulaması",
+  "ENTER_CODE_HERE": "Doğrulama kodunu giriniz",
+  "BUTTON_CLOSE": "Kapat"
 }

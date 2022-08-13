@@ -1,15 +1,10 @@
 {
-  "name": "YaaniMail Chrome Extension",
-  "description": "YaaniMail Chrome Extension",
+  "name": "YaaniMail Turkcell Chrome Extension",
+  "description": "YaaniMail Turkcell Chrome Extension",
   "version": "1.0",
   "manifest_version": 3,
-  "keywords": ["react", "browser extension", "chrome extension", "yaanimail"],
-  "permissions": [
-    "http://api.yaanimail.com/*",
-    "storage",
-    "notifications",
-    "alarms"
-  ],
+  "host_permissions": ["https://ymapi.turkcell.com.tr/*"],
+  "permissions": ["storage", "notifications", "alarms"],
   "action": {
     "default_popup": "index.html",
     "default_title": "Open the popup"

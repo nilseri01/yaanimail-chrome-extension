@@ -24,6 +24,11 @@
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.3",
+    "react-chips": "^0.8.0",
+    "react-countdown": "^2.3.2",
+    "react-datetime": "^3.1.1",
+    "react-datetime-range-picker": "^3.0.0",
+    "react-device-detect": "^2.2.2",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.15.1",
     "react-redux": "^7.2.6",
@@ -38,11 +43,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
+    "build": "INLINE_RUNTIME_CHUNK=false react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:i": "env-cmd -f ./environments/.env.individual npm run-script build",
-    "build:e": "env-cmd -f ./environments/.env.enterprise npm run-script build"
+    "build:t": "env-cmd -f ./environments/.env.prod npm run-script build"
   },
   "eslintConfig": {
     "extends": [

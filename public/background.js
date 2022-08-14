@@ -15,6 +15,18 @@ scheduleRequest = () => {
   chrome.alarms.create('refresh', { periodInMinutes: 1 });
 };
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message === 'update-unread-count') {
+    startRequest();
+  }
+});
+
+sendRefreshMessage = (count) => {
+  chrome.runtime.sendMessage({
+    updatedCound: count
+  });
+};
+
 startRequest = () => {
   getAuthHeaders()
     .then((headers) => {
@@ -31,6 +43,7 @@ startRequest = () => {
             chrome.action.setBadgeText({ text: '' });
             if (inbox && inbox.length > 0 && inbox[0].unread !== 0) {
               chrome.action.setBadgeText({ text: `${inbox[0].unread}` });
+              sendRefreshMessage(inbox[0].unread);
             }
           })
           .catch((error) => {
@@ -55,9 +68,10 @@ getAuthHeaders = () => {
         let headers = {
           Authorization: 'Bearer ' + values[0],
           'App-Version': '1.0',
-          'Device-Language': 'en-US',
+          'Device-Language': navigator.language.replace('-', '_'),
           'Device-Name': 'WEB',
-          'Device-ID': values[1]
+          'Device-ID': values[1],
+          'Device-OS': 'CHROME'
         };
         return headers;
       } else {

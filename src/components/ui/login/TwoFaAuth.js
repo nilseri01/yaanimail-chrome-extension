@@ -16,8 +16,7 @@ function TwoFaAuth(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [twoFaCode, setTwoFaCode] = useState('');
 
-  const [show, setShow] = useState(true);
-  const handleClose = () => setShow(false);
+  const handleClose = () => props.setTwoFaRequired(false);
 
   const dispatch = useDispatch();
 
@@ -49,10 +48,11 @@ function TwoFaAuth(props) {
         }).then((data) => {
           dispatch(setAuthedUser(JSON.parse(data['ym@user'])));
           dispatch(setView('inbox'));
-          setShow(false);
+          props.setTwoFaRequired(false);
         });
       })
       .catch((error) => {
+        setIsLoading(false);
         // TODO: NilS error objesi?
         console.log(error.message);
         toast.error(error.message);
@@ -60,7 +60,7 @@ function TwoFaAuth(props) {
   };
 
   return (
-    <Modal show={show}>
+    <Modal show={props.isTwoFaRequired}>
       <Modal.Header closeButton>
         <Modal.Title className="text-primary">{t('TWO_FA_HEADER')}</Modal.Title>
       </Modal.Header>

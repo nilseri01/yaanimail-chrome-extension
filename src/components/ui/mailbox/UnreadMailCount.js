@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import classes from './Mailbox.module.css';
 import MailboxService from '../../../services/MailboxService';
@@ -16,7 +15,15 @@ function UnreadMailCount() {
   const [isLoading, setIsLoading] = useState(false);
   const [unreadEmailCount, setUnreadEmailCount] = useState(0);
 
-  useEffect(() => {
+  const updateUnreadMailCount = () => {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request?.updatedCound) {
+        setUnreadEmailCount(request.updatedCound);
+      }
+    });
+  };
+
+  const getUnreadMailCount = () => {
     setIsLoading(true);
     MailboxService.getAllFolders()
       .then((response) => {
@@ -41,6 +48,11 @@ function UnreadMailCount() {
           console.log(t(error.data.message));
         }
       });
+  };
+
+  useEffect(() => {
+    updateUnreadMailCount();
+    getUnreadMailCount();
   }, []);
 
   return (

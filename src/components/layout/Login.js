@@ -13,7 +13,6 @@ function Login() {
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isTwoFaRequired, setTwoFaRequired] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -91,12 +90,12 @@ function Login() {
         </div>
         <ToastContainer position="bottom-left" autoClose={1500} closeOnClick />
       </form>
-      {isTwoFaRequired && (
-        <TwoFaAuth
-          twoFaUuid={twoFaUuid}
-          twoFaTimeout={twoFaTimeout}
-        ></TwoFaAuth>
-      )}
+      <TwoFaAuth
+        isTwoFaRequired={isTwoFaRequired}
+        setTwoFaRequired={setTwoFaRequired}
+        twoFaUuid={twoFaUuid}
+        twoFaTimeout={twoFaTimeout}
+      ></TwoFaAuth>
     </Fragment>
   );
 }

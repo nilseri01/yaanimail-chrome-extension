@@ -1,4 +1,5 @@
 import UtilsService from './UtilsService';
+import { osName, browserName, browserVersion } from 'react-device-detect';
 
 class HttpHeadersService {
   static getAuthHeaders = () => {
@@ -9,8 +10,9 @@ class HttpHeadersService {
           let headers = {
             Authorization: 'Bearer ' + values[0],
             'App-Version': '1.0',
-            'Device-Language': 'en-US',
-            'Device-Name': 'WEB',
+            'Device-Language': navigator.language.replace('-', '_'),
+            'Device-Name': osName + '-' + browserName + '-' + browserVersion,
+            'Device-OS': 'CHROME',
             'Device-ID': values[1]
           };
           return headers;
@@ -28,8 +30,9 @@ class HttpHeadersService {
       this.getDeviceId().then((deviceId) => {
         let headers = {
           'App-Version': '1.0',
-          'Device-Language': 'en-US',
-          'Device-Name': 'WEB',
+          'Device-Language': navigator.language.replace('-', '_'),
+          'Device-Name': osName + '-' + browserName + '-' + browserVersion,
+          'Device-OS': 'CHROME',
           'Device-ID': deviceId
         };
         resolve(headers);

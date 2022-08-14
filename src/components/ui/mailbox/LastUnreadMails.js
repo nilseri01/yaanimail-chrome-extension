@@ -52,6 +52,10 @@ function LastUnreadMails(props) {
     */
   };
 
+  const updateUnreadCount = () => {
+    chrome.runtime.sendMessage('update-unread-count');
+  };
+
   const markAsRead = (emailId) => {
     let markAsReadInfo = { message_id: [emailId] };
     setIsLoading(true);
@@ -60,6 +64,7 @@ function LastUnreadMails(props) {
         setIsLoading(false);
         // reload mails
         setLastUnreadMails(lastUnreadMails.filter((m) => m.id !== emailId));
+        updateUnreadCount();
       })
       .catch((error) => {
         // TODO: NilS error objesi?
@@ -76,6 +81,7 @@ function LastUnreadMails(props) {
         setIsLoading(false);
         // reload mails
         setLastUnreadMails(lastUnreadMails.filter((m) => m.id !== emailId));
+        updateUnreadCount();
         // TODO: NilS buradan silince service worker trigger et
       })
       .catch((error) => {

@@ -11,5 +11,11 @@
   "BUTTON_CONTINUE": "Devam",
   "TWO_FA_HEADER": "İki faktörlü kimlik doğrulaması",
   "ENTER_CODE_HERE": "Doğrulama kodunu giriniz",
-  "BUTTON_CLOSE": "Kapat"
+  "BUTTON_CLOSE": "Kapat",
+  "CREATE_EVENT": "Yeni Etkinlik",
+  "ADD_TITLE": "Başlık ekle",
+  "ALL_DAY": "Tüm gün",
+  "ADD_ATTENDEE": "Katılımcı ekle",
+  "ADD_LOCATION": "Konum ekle",
+  "BUTTON_SAVE_EVENT": "Gönder"
 }

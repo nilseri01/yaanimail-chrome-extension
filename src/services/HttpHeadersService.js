@@ -2,19 +2,47 @@ import UtilsService from './UtilsService';
 import { osName, browserName, browserVersion } from 'react-device-detect';
 
 class HttpHeadersService {
+  static prepareNoAuthHeaders = () => {
+    let headers = {
+      'App-Version': '1.0',
+      'Device-Language': navigator.language.replace('-', '_'),
+      'Device-Name': osName + '-' + browserName + '-' + browserVersion,
+      'Device-OS': 'CHROME'
+    };
+    return headers;
+  };
+
+  static prepareAuthHeaders = (values) => {
+    let headers = this.prepareNoAuthHeaders();
+    headers = {
+      ...headers,
+      Authorization: 'Bearer ' + values[0],
+      'Device-ID': values[1]
+    };
+    return headers;
+  };
+
   static getAuthHeaders = () => {
+    // TODO: NilS logout case'i handle et
     return Promise.all([this.getUserToken(), this.getDeviceId()])
       .then((values) => {
         if (values.length == 2) {
-          // TODO: NilS
-          let headers = {
-            Authorization: 'Bearer ' + values[0],
-            'App-Version': '1.0',
-            'Device-Language': navigator.language.replace('-', '_'),
-            'Device-Name': osName + '-' + browserName + '-' + browserVersion,
-            'Device-OS': 'CHROME',
-            'Device-ID': values[1]
-          };
+          return this.prepareAuthHeaders(values);
+        } else {
+          return {};
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  static getV2AuthHeaders = () => {
+    return Promise.all([this.getUserToken(), this.getDeviceId()])
+      .then((values) => {
+        if (values.length == 2) {
+          let headers = this.prepareAuthHeaders(values);
+          headers = { ...headers, Accept: 'application/x.yaanimail.v2+json' };
           return headers;
         } else {
           return {};
@@ -28,15 +56,9 @@ class HttpHeadersService {
   static getNonAuthHeaders = () => {
     return new Promise((resolve, reject) => {
       this.getDeviceId().then((deviceId) => {
-        let headers = {
-          'App-Version': '1.0',
-          'Device-Language': navigator.language.replace('-', '_'),
-          'Device-Name': osName + '-' + browserName + '-' + browserVersion,
-          'Device-OS': 'CHROME',
-          'Device-ID': deviceId
-        };
+        let headers = this.prepareNoAuthHeaders();
+        headers = { ...headers, 'Device-ID': deviceId };
         resolve(headers);
-        // TODO: NilS logo değiştir!!
       });
     });
   };

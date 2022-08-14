@@ -34,6 +34,27 @@ class CalendarService {
         });
     });
   };
+
+  static createAppointment = (data) => {
+    return new Promise((resolve, reject) => {
+      HttpHeadersService.getAuthHeaders()
+        .then((headers) => {
+          API_CONFIG.post('/calendars/appointment/create', data, {
+            headers: headers
+          })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((error) => {
+              reject(error.response);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  };
 }
 
 export default CalendarService;

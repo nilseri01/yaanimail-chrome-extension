@@ -1,0 +1,244 @@
+import { Fragment, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import ContactService from '../../../services/ContactService';
+import CalendarService from '../../../services/CalendarService';
+import { ToastContainer, toast } from 'react-toastify';
+import { Form, Modal, Button, ToggleButton } from 'react-bootstrap';
+import Linkify from 'linkify-react';
+import moment from 'moment/moment.js';
+import 'moment/locale/tr';
+import { useTranslation } from 'react-i18next';
+import classes from './Calendar.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCalendarPlus,
+  faClock,
+  faUser,
+  faMap
+} from '@fortawesome/free-regular-svg-icons';
+import Chips, { Chip } from 'react-chips';
+import DatetimeRangePicker from 'react-datetime-range-picker';
+
+function CreateEvent(props) {
+  moment.locale(props.language);
+  const { t } = useTranslation();
+
+  const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const [attendees, setAttendees] = useState([]);
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const handleCloseCreateEventModal = () => setShow(false);
+  const handleShowCreateEventModal = () => setShow(true);
+
+  const getFilteredSuggestions = (data) => {
+    const items = [];
+    for (let i = 0; i < data.length; i++) {
+      const email = data[i].email;
+      if ((email || '').length > 0 && items.some((y) => y === email) !== true) {
+        // skip tag, get only contact
+        items.push(email);
+      }
+    }
+    setFilteredSuggestions(items);
+  };
+
+  const fetchAttendeeSuggestions = async (input) => {
+    await ContactService.autoSuggest(input)
+      .then((response) => {
+        setIsLoading(false);
+        getFilteredSuggestions(response.data);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+        // TODO: NilS error objesi?
+        if (error && error.data) {
+          console.log(t(error.data.message));
+        }
+      });
+    return filteredSuggestions;
+  };
+
+  const handleAttendeesChange = (addedAttendees) => {
+    const emailRegex = /^[\w\.=-]+@[\w\.-]+\.[\w]{2,}$/;
+    const validAttendees = [];
+    addedAttendees.forEach((attendee) => {
+      if (emailRegex.test(attendee) === true) {
+        validAttendees.push(attendee);
+      }
+    });
+    setAttendees(validAttendees);
+  };
+
+  const onStartDateChange = (startDateMoment) => {
+    setStartDate(startDateMoment);
+  };
+
+  const onEndDateChange = (endDateMoment) => {
+    setEndDate(endDateMoment);
+  };
+
+  const prepareEventData = () => {
+    // TODO:NilS attendees boşsa başlık yoksa vs. buton disabled
+    let eventData = {
+      allDay: 0,
+      reminder_duration_action: 'DISPLAY',
+      reminder_duration_type: 'm',
+      reminder_duration: 5
+    };
+    if (attendees.length > 0) {
+      const attendeeEmails = [];
+      const to = [];
+      for (let i = 0; i < attendees.length; i++) {
+        const attendee = {
+          address: attendees[i],
+          role: 'REQ',
+          rsvp: 1
+        };
+        const email = {
+          email: attendees[i]
+        };
+        to.push(email);
+        attendeeEmails.push(attendee);
+      }
+      eventData = { ...eventData, to: to, attendees: attendeeEmails };
+    }
+
+    eventData = {
+      ...eventData,
+      start_time: moment(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").valueOf(), // 2022-08-14T21:14:40.797Z
+      end_time: moment(endDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").valueOf()
+    };
+
+    if ((eventTitle || '').length !== 0) {
+      eventData = { ...eventData, name: eventTitle };
+    }
+    if ((eventLocation || '').length !== 0) {
+      eventData = { ...eventData, location: eventLocation };
+    }
+    return eventData;
+  };
+
+  const createEvent = () => {
+    let eventData = prepareEventData();
+    console.log(eventData);
+
+    setIsLoading(true);
+    CalendarService.createAppointment(eventData)
+      .then((response) => {
+        // TODO: NilS
+        setIsLoading(false);
+        // TODO: NilS created info göster kullanıcıya
+        setShow(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        // TODO: NilS error objesi?
+        console.log(error.message);
+        toast.error(error.message);
+      });
+  };
+
+  return (
+    <Fragment>
+      <nav class="navbar navbar-light bg-light justify-content-end">
+        <FontAwesomeIcon icon={faCalendarPlus} className="text-primary" />
+        <Button
+          variant="link"
+          className={`ps-1 ${classes.create_event_button}`}
+          onClick={handleShowCreateEventModal}
+        >
+          {t('CREATE_EVENT')}
+        </Button>
+      </nav>
+      <Modal show={show} onHide={handleCloseCreateEventModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('CREATE_EVENT')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group
+              className="mb-3 d-flex flex-row align-items-center"
+              controlId="createEventForm.title"
+            >
+              <Form.Control
+                type="input"
+                placeholder={t('ADD_TITLE')}
+                value={eventTitle}
+                onChange={(e) => setEventTitle(e.target.value)}
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3 d-flex flex-row align-items-center"
+              controlId="createEventForm.date"
+            >
+              <FontAwesomeIcon icon={faClock} className="text-primary pe-2" />
+              <DatetimeRangePicker
+                className="flex-grow-1"
+                dateFormat="DD-MM-YYYY"
+                timeFormat="HH:mm"
+                locale={moment.locale()}
+                onStartDateChange={onStartDateChange}
+                onEndDateChange={onEndDateChange}
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3 d-flex flex-row align-items-center"
+              controlId="createEventForm.attendees"
+            >
+              <FontAwesomeIcon icon={faUser} className="text-primary pe-2" />
+              <div className="flex-grow-1">
+                <Chips
+                  placeholder={t('ADD_ATTENDEE')}
+                  value={attendees}
+                  fromSuggestionsOnly={false}
+                  uniqueChips={true}
+                  onChange={handleAttendeesChange}
+                  fetchSuggestions={fetchAttendeeSuggestions}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group
+              className="mb-3 d-flex flex-row align-items-center"
+              controlId="createEventForm.location"
+            >
+              <FontAwesomeIcon icon={faMap} className="text-primary pe-2" />
+              <Form.Control
+                type="input"
+                className="flex-grow-1"
+                placeholder={t('ADD_LOCATION')}
+                value={eventLocation}
+                onChange={(e) => setEventLocation(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseCreateEventModal}>
+            {t('BUTTON_CLOSE')}
+          </Button>
+          <Button variant="primary" onClick={createEvent}>
+            {t('BUTTON_SAVE_EVENT')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Fragment>
+  );
+}
+
+function mapStateToProps({ authedUser }) {
+  return {
+    language:
+      authedUser && (authedUser.language || '').length > 0
+        ? authedUser.language
+        : 'tr'
+  };
+}
+
+export default connect(mapStateToProps)(CreateEvent);

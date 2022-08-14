@@ -11,5 +11,11 @@
   "BUTTON_CONTINUE": "Continue",
   "TWO_FA_HEADER": "Two-factor authentication",
   "ENTER_CODE_HERE": "Enter the verification code",
-  "BUTTON_CLOSE": "Close"
+  "BUTTON_CLOSE": "Close",
+  "CREATE_EVENT": "New Event",
+  "ADD_TITLE": "Add title",
+  "ALL_DAY": "All day",
+  "ADD_ATTENDEE": "Add attendees",
+  "ADD_LOCATION": "Add location",
+  "BUTTON_SAVE_EVENT": "Send"
 }

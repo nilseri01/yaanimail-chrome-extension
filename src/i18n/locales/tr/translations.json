@@ -19,5 +19,6 @@
   "ADD_LOCATION": "Konum ekle",
   "BUTTON_SAVE_EVENT": "Gönder",
   "SUCCESS_APPOINTMENT_CREATED": "Etkinlik oluşturuldu",
-  "ERR_UNKNOWN_ERROR_HAS_OCCURED": "Unknown error has occured"
+  "ERR_UNKNOWN_ERROR_HAS_OCCURED": "Bilinmeyen bir hata oluştu",
+  "ERR_USERNAME_OR_PASSWORD_WRONG": "E-posta adresi veya şifre hatalı."
 }

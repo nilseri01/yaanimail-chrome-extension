@@ -69,7 +69,7 @@ getAuthHeaders = () => {
           Authorization: 'Bearer ' + values[0],
           'App-Version': '1.0',
           'Device-Language': navigator.language.replace('-', '_'),
-          'Device-Name': 'WEB',
+          'Device-Name': navigator.userAgent,
           'Device-ID': values[1],
           'Device-OS': 'CHROME'
         };

@@ -46,11 +46,8 @@ function Login() {
         }
       })
       .catch((error) => {
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        console.log(error);
+        dispatch(showErrorToast(error?.message));
       })
       .finally(() => {
         setIsLoading(false);

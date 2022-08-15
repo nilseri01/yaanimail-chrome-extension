@@ -19,5 +19,6 @@
   "ADD_LOCATION": "Add location",
   "BUTTON_SAVE_EVENT": "Send",
   "SUCCESS_APPOINTMENT_CREATED": "Appointment has been created",
-  "ERR_UNKNOWN_ERROR_HAS_OCCURED": "Bilinmeyen bir hata oluştu"
+  "ERR_UNKNOWN_ERROR_HAS_OCCURED": "Unknown error has occured",
+  "ERR_USERNAME_OR_PASSWORD_WRONG": "Username or password is wrong. Please check and try again"
 }

@@ -55,11 +55,7 @@ function CreateEvent(props) {
         getFilteredSuggestions(response.data);
       })
       .catch((error) => {
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        dispatch(showErrorToast(error?.message));
       })
       .finally(() => {
         setIsLoading(false);
@@ -138,11 +134,7 @@ function CreateEvent(props) {
         dispatch(showSuccessToast(t('SUCCESS_APPOINTMENT_CREATED')));
       })
       .catch((error) => {
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        dispatch(showErrorToast(error?.message));
       })
       .finally(() => {
         setIsLoading(false);

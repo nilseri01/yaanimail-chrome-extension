@@ -67,11 +67,7 @@ function LastUnreadMails(props) {
         updateUnreadCount();
       })
       .catch((error) => {
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        dispatch(showErrorToast(error?.message));
       })
       .finally(() => {
         setIsLoading(false);
@@ -90,11 +86,7 @@ function LastUnreadMails(props) {
         // TODO: NilS buradan silince service worker trigger et
       })
       .catch((error) => {
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        dispatch(showErrorToast(error?.message));
       });
   };
 
@@ -117,11 +109,7 @@ function LastUnreadMails(props) {
         setLastUnreadMails(response.data);
       })
       .catch((error) => {
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        dispatch(showErrorToast(error?.message));
       })
       .finally(() => {
         setIsLoading(false);

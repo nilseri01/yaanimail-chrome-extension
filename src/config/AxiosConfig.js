@@ -5,11 +5,11 @@ import { logout } from '../actions/authedUser';
 import { useDispatch } from 'react-redux';
 
 const createErrorMessage = (error) => {
-  let errorCode = error?.error?.message;
-  if (errorCode && i18n.exists(errorCode)) {
+  let errorCode = error?.data?.message;
+  if ((errorCode || '').trim().length > 0 && i18n.exists(errorCode)) {
     return i18n.t(errorCode);
   } else {
-    return error.error.message;
+    return i18n.t('ERR_UNKNOWN_ERROR_HAS_OCCURED');
   }
 };
 

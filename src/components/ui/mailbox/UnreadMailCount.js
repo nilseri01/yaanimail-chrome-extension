@@ -44,11 +44,7 @@ function UnreadMailCount() {
       })
       .catch((error) => {
         chrome.action.setBadgeText({ text: '' });
-        dispatch(
-          showErrorToast(
-            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
-          )
-        );
+        dispatch(showErrorToast(error?.message));
       })
       .finally(() => {
         setIsLoading(false);

@@ -70,9 +70,7 @@ function CalendarToday(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [todaysAppointments, setTodaysAppointments] = useState([]);
 
-  useEffect(() => {
-    setIsLoading(true);
-
+  const getTodaysEvents = () => {
     const beginEpoc = moment(new Date()).startOf('day').valueOf();
     let data = {
       calendarId: 10,
@@ -80,6 +78,7 @@ function CalendarToday(props) {
       endTime: moment(beginEpoc).endOf('day').valueOf()
     };
 
+    setIsLoading(true);
     CalendarService.getEvents(data)
       .then((response) => {
         setIsLoading(false);
@@ -93,7 +92,11 @@ function CalendarToday(props) {
           console.log(t(error.data.message));
         }
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    getTodaysEvents();
+  }, [props.isRefreshRequired]);
 
   return (
     <Fragment>
@@ -107,30 +110,32 @@ function CalendarToday(props) {
         </div>
       ) : (
         todaysAppointments &&
-        todaysAppointments.map((event) => (
-          <div>
-            <Card border="info" key={event.id}>
-              <Card.Header>
-                <div className="fs-6">
-                  <Badge bg="primary">{event.start}</Badge>
-                  <span className="text-primary"> - </span>
-                  <Badge bg="primary">{event.end}</Badge>
-                </div>
-                <Badge variant="primary" pill>
-                  {event.allDay}
-                </Badge>
-              </Card.Header>
-              <Card.Body>
-                <Card.Text>{event.title}</Card.Text>
-                <Card.Text>
-                  <Linkify options={{ attributes: linkProps }}>
-                    {event.location}
-                  </Linkify>
-                </Card.Text>
-              </Card.Body>
-            </Card>
+        todaysAppointments.length > 0 && (
+          <div className={classes.todays_calendar_events}>
+            {todaysAppointments.map((event) => (
+              <Card border="info" key={event.id}>
+                <Card.Header>
+                  <div className="fs-6">
+                    <Badge bg="primary">{event.start}</Badge>
+                    <span className="text-primary"> - </span>
+                    <Badge bg="primary">{event.end}</Badge>
+                  </div>
+                  <Badge variant="primary" pill>
+                    {event.allDay}
+                  </Badge>
+                </Card.Header>
+                <Card.Body>
+                  <Card.Text>{event.title}</Card.Text>
+                  <Card.Text>
+                    <Linkify options={{ attributes: linkProps }}>
+                      {event.location}
+                    </Linkify>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            ))}
           </div>
-        ))
+        )
       )}
       {!isLoading && (!todaysAppointments || todaysAppointments.length === 0) && (
         <div className="container h-100">

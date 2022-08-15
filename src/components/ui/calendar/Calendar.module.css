@@ -5,3 +5,12 @@
 .create_event_button {
   --bs-btn-focus-shadow-rgb: transparent;
 }
+
+.create_event_navbar {
+  height: 40px;
+}
+
+.todays_calendar_events {
+  height: 360px;
+  overflow: scroll;
+}

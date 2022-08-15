@@ -1,9 +1,9 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import ContactService from '../../../services/ContactService';
 import CalendarService from '../../../services/CalendarService';
 import { ToastContainer, toast } from 'react-toastify';
-import { Form, Modal, Button, ToggleButton } from 'react-bootstrap';
+import { Form, Modal, Button, Container, Nav, Navbar } from 'react-bootstrap';
 import Linkify from 'linkify-react';
 import moment from 'moment/moment.js';
 import 'moment/locale/tr';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import classes from './Calendar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faBookmark,
   faCalendarPlus,
   faClock,
   faUser,
@@ -35,6 +36,7 @@ function CreateEvent(props) {
   const handleCloseCreateEventModal = () => setShow(false);
   const handleShowCreateEventModal = () => setShow(true);
 
+  // TODO: NilS dışarı taşı?
   const getFilteredSuggestions = (data) => {
     const items = [];
     for (let i = 0; i < data.length; i++) {
@@ -84,7 +86,6 @@ function CreateEvent(props) {
   };
 
   const prepareEventData = () => {
-    // TODO:NilS attendees boşsa başlık yoksa vs. buton disabled
     let eventData = {
       allDay: 0,
       reminder_duration_action: 'DISPLAY',
@@ -133,6 +134,7 @@ function CreateEvent(props) {
       .then((response) => {
         // TODO: NilS
         setIsLoading(false);
+        props.setRefreshRequired(true);
         // TODO: NilS created info göster kullanıcıya
         setShow(false);
       })
@@ -146,16 +148,23 @@ function CreateEvent(props) {
 
   return (
     <Fragment>
-      <nav class="navbar navbar-light bg-light justify-content-end">
-        <FontAwesomeIcon icon={faCalendarPlus} className="text-primary" />
-        <Button
-          variant="link"
-          className={`ps-1 ${classes.create_event_button}`}
-          onClick={handleShowCreateEventModal}
-        >
-          {t('CREATE_EVENT')}
-        </Button>
-      </nav>
+      <Navbar
+        bg="light"
+        variant="light"
+        fixed="bottom"
+        className={classes.create_event_navbar}
+      >
+        <Container className="justify-content-end pe-1">
+          <FontAwesomeIcon icon={faCalendarPlus} className="text-primary" />
+          <Button
+            variant="link"
+            className={`ps-1 ${classes.create_event_button}`}
+            onClick={handleShowCreateEventModal}
+          >
+            {t('CREATE_EVENT')}
+          </Button>
+        </Container>
+      </Navbar>
       <Modal show={show} onHide={handleCloseCreateEventModal}>
         <Modal.Header closeButton>
           <Modal.Title>{t('CREATE_EVENT')}</Modal.Title>
@@ -166,8 +175,13 @@ function CreateEvent(props) {
               className="mb-3 d-flex flex-row align-items-center"
               controlId="createEventForm.title"
             >
+              <FontAwesomeIcon
+                icon={faBookmark}
+                className="text-primary pe-2"
+              />
               <Form.Control
                 type="input"
+                className="flex-grow-1"
                 placeholder={t('ADD_TITLE')}
                 value={eventTitle}
                 onChange={(e) => setEventTitle(e.target.value)}

@@ -23,7 +23,7 @@ function Toolbar(props) {
 
   return (
     <ButtonToolbar
-      aria-label="Toolbar with Button groups"
+      aria-label="header toolbar"
       className="border border-info p-1 d-flex justify-content-between"
     >
       <div className={`d-flex flex-column ms-2 ${classes.toolbar_container}`}>

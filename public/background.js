@@ -39,24 +39,25 @@ startRequest = () => {
             return response.json();
           })
           .then((data) => {
-            let inbox = data.filter((f) => f.id == 2);
-            chrome.action.setBadgeText({ text: '' });
-            if (inbox && inbox.length > 0 && inbox[0].unread !== 0) {
-              chrome.action.setBadgeText({ text: `${inbox[0].unread}` });
-              sendRefreshMessage(inbox[0].unread);
+            if (data.errors) {
+              chrome.action.setBadgeText({ text: '' });
+              console.log(data.errors);
+            } else {
+              let inbox = data.filter((f) => f.id == 2);
+              chrome.action.setBadgeText({ text: '' });
+              if (inbox && inbox.length > 0 && inbox[0].unread !== 0) {
+                chrome.action.setBadgeText({ text: `${inbox[0].unread}` });
+                sendRefreshMessage(inbox[0].unread);
+              }
             }
           })
           .catch((error) => {
             chrome.action.setBadgeText({ text: '' });
-            console.log(error);
-            // TODO: NilS error objesi?
-            console.log(error.error.message);
           });
       }
     })
     .catch((error) => {
       chrome.action.setBadgeText({ text: '' });
-      console.log(error);
     });
 };
 

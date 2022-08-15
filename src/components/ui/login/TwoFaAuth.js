@@ -58,8 +58,15 @@ function TwoFaAuth(props) {
       });
   };
 
+  const onKeyPress = (event) => {
+    // TODO: NilS
+    if (!isLoading && event.which === 13) {
+      this.sendTwoFaPassword(event);
+    }
+  };
+
   return (
-    <Modal show={props.isTwoFaRequired}>
+    <Modal show={props.isTwoFaRequired} onKeyPress={onKeyPress}>
       <Modal.Header closeButton>
         <Modal.Title className="text-primary">{t('TWO_FA_HEADER')}</Modal.Title>
       </Modal.Header>

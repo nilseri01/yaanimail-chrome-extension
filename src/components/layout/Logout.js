@@ -1,20 +1,17 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { setAuthedUser } from '../../actions/authedUser';
+import { showErrorToast } from '../../actions/toast';
+import { Button } from 'react-bootstrap';
 import { logout } from '../../actions/authedUser';
-import HttpHeadersService from '../../services/HttpHeadersService';
 import UtilsService from '../../services/UtilsService';
 import LoginService from '../../services/LoginService';
 import { useTranslation } from 'react-i18next';
 
 function Logout() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const dispatch = useDispatch();
 
   const handleLogout = (event) => {
     setIsLoading(true);
@@ -22,22 +19,32 @@ function Logout() {
     LoginService.logout()
       .then(() => {
         UtilsService.saveToLocalStorage('ym@user', null).then(() => {
-          setIsLoading(false);
           dispatch(logout());
         });
       })
       .catch((error) => {
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        console.log(error);
-        // TODO: NilS error objesi?
       });
   };
 
   return (
-    <Button variant="danger" onClick={handleLogout}>
+    <Button variant="danger" disabled={isLoading} onClick={handleLogout}>
       {t('LOGOUT')}
     </Button>
   );
 }
 
-export default Logout;
+function mapStateToProps({ toast }) {
+  return {
+    toastInfo: toast
+  };
+}
+
+export default connect(mapStateToProps)(Logout);

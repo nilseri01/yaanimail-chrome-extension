@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
+import { showErrorToast } from '../../../actions/toast';
 import { setAuthedUser } from '../../../actions/authedUser';
 import { setView } from '../../../actions/view';
 import LoginService from '../../../services/LoginService';
 import UtilsService from '../../../services/UtilsService';
 import { useTranslation } from 'react-i18next';
-import { ToastContainer, toast } from 'react-toastify';
 import { Form, Modal, Button } from 'react-bootstrap';
 import Countdown, { zeroPad } from 'react-countdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -41,7 +41,6 @@ function TwoFaAuth(props) {
     setIsLoading(true);
     LoginService.sendTwoFaPassword(twoFaInfo)
       .then((response) => {
-        setIsLoading(false);
         UtilsService.saveMultipleToLocalStorage({
           'ym@user': JSON.stringify(response.data),
           'ym@view': 'inbox'
@@ -52,10 +51,14 @@ function TwoFaAuth(props) {
         });
       })
       .catch((error) => {
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        // TODO: NilS error objesi?
-        console.log(error.message);
-        toast.error(error.message);
       });
   };
 
@@ -105,7 +108,6 @@ function TwoFaAuth(props) {
           {t('BUTTON_CONTINUE')}
         </Button>
       </Modal.Footer>
-      <ToastContainer position="bottom-left" autoClose={1500} closeOnClick />
     </Modal>
   );
 }

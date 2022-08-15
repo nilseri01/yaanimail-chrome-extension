@@ -17,5 +17,7 @@
   "ALL_DAY": "Tüm gün",
   "ADD_ATTENDEE": "Katılımcı ekle",
   "ADD_LOCATION": "Konum ekle",
-  "BUTTON_SAVE_EVENT": "Gönder"
+  "BUTTON_SAVE_EVENT": "Gönder",
+  "SUCCESS_APPOINTMENT_CREATED": "Etkinlik oluşturuldu",
+  "ERR_UNKNOWN_ERROR_HAS_OCCURED": "Unknown error has occured"
 }

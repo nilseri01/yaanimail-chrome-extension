@@ -1,16 +1,17 @@
 import { Fragment, useState } from 'react';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { connect, useDispatch } from 'react-redux';
+import { showErrorToast } from '../../actions/toast';
 import { setAuthedUser } from '../../actions/authedUser';
 import { setView } from '../../actions/view';
 import UtilsService from '../../services/UtilsService';
 import LoginService from '../../services/LoginService';
 import { useTranslation } from 'react-i18next';
-import { ToastContainer, toast } from 'react-toastify';
 import TwoFaAuth from '../ui/login/TwoFaAuth';
 
 function Login() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isTwoFaRequired, setTwoFaRequired] = useState(false);
@@ -18,7 +19,6 @@ function Login() {
   const [password, setPassword] = useState('');
   const [twoFaUuid, setTwoFaUuid] = useState('');
   const [twoFaTimeout, setTwoFaTimeout] = useState(0);
-  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,8 +31,6 @@ function Login() {
     setIsLoading(true);
     LoginService.login(loginInfo)
       .then((response) => {
-        // TODO: NilS
-        setIsLoading(false);
         if (response.data.two_fa_security === 1) {
           setTwoFaUuid(response.data.two_fa_code);
           setTwoFaTimeout(response.data.two_fa_time_out);
@@ -48,9 +46,14 @@ function Login() {
         }
       })
       .catch((error) => {
-        // TODO: NilS error objesi?
-        console.log(error.message);
-        toast.error(error.message);
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -88,7 +91,6 @@ function Login() {
             </Button>
           </div>
         </div>
-        <ToastContainer position="bottom-left" autoClose={1500} closeOnClick />
       </form>
       <TwoFaAuth
         isTwoFaRequired={isTwoFaRequired}
@@ -100,4 +102,10 @@ function Login() {
   );
 }
 
-export default connect()(Login);
+function mapStateToProps({ toast }) {
+  return {
+    toastInfo: toast
+  };
+}
+
+export default connect(mapStateToProps)(Login);

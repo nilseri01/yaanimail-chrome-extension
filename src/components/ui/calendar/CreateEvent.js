@@ -1,10 +1,9 @@
 import { Fragment, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { showSuccessToast, showErrorToast } from '../../../actions/toast';
 import ContactService from '../../../services/ContactService';
 import CalendarService from '../../../services/CalendarService';
-import { ToastContainer, toast } from 'react-toastify';
 import { Form, Modal, Button, Container, Nav, Navbar } from 'react-bootstrap';
-import Linkify from 'linkify-react';
 import moment from 'moment/moment.js';
 import 'moment/locale/tr';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +22,7 @@ import DatetimeRangePicker from 'react-datetime-range-picker';
 function CreateEvent(props) {
   moment.locale(props.language);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,16 +52,17 @@ function CreateEvent(props) {
   const fetchAttendeeSuggestions = async (input) => {
     await ContactService.autoSuggest(input)
       .then((response) => {
-        setIsLoading(false);
         getFilteredSuggestions(response.data);
       })
       .catch((error) => {
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        console.log(error);
-        // TODO: NilS error objesi?
-        if (error && error.data) {
-          console.log(t(error.data.message));
-        }
       });
     return filteredSuggestions;
   };
@@ -127,22 +128,24 @@ function CreateEvent(props) {
 
   const createEvent = () => {
     let eventData = prepareEventData();
-    console.log(eventData);
 
     setIsLoading(true);
     CalendarService.createAppointment(eventData)
       .then((response) => {
-        // TODO: NilS
-        setIsLoading(false);
         props.setRefreshRequired(true);
         // TODO: NilS created info göster kullanıcıya
         setShow(false);
+        dispatch(showSuccessToast(t('SUCCESS_APPOINTMENT_CREATED')));
       })
       .catch((error) => {
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        // TODO: NilS error objesi?
-        console.log(error.message);
-        toast.error(error.message);
       });
   };
 
@@ -237,7 +240,7 @@ function CreateEvent(props) {
           <Button variant="secondary" onClick={handleCloseCreateEventModal}>
             {t('BUTTON_CLOSE')}
           </Button>
-          <Button variant="primary" onClick={createEvent}>
+          <Button variant="primary" onClick={createEvent} disabled={isLoading}>
             {t('BUTTON_SAVE_EVENT')}
           </Button>
         </Modal.Footer>

@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom';
 import { Fragment, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { showErrorToast } from '../../../actions/toast';
 import MailboxService from '../../../services/MailboxService';
 import { Card, Spinner } from 'react-bootstrap';
 import moment from 'moment/moment.js';
 import classes from './Mailbox.module.css';
 import iconMail from '../../../assets/img/icon-mail.png';
 import { useTranslation } from 'react-i18next';
-import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelopeOpen,
@@ -16,6 +15,8 @@ import {
 
 function LastUnreadMails(props) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [lastUnreadMails, setLastUnreadMails] = useState([]);
 
@@ -61,15 +62,19 @@ function LastUnreadMails(props) {
     setIsLoading(true);
     MailboxService.markAsRead(markAsReadInfo)
       .then((response) => {
-        setIsLoading(false);
         // reload mails
         setLastUnreadMails(lastUnreadMails.filter((m) => m.id !== emailId));
         updateUnreadCount();
       })
       .catch((error) => {
-        // TODO: NilS error objesi?
-        console.log(error.message);
-        toast.error(error.message);
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -85,9 +90,11 @@ function LastUnreadMails(props) {
         // TODO: NilS buradan silince service worker trigger et
       })
       .catch((error) => {
-        // TODO: NilS error objesi?
-        console.log(error.message);
-        toast.error(error.message);
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
       });
   };
 
@@ -107,16 +114,17 @@ function LastUnreadMails(props) {
     };
     MailboxService.getMails(data)
       .then((response) => {
-        setIsLoading(false);
         setLastUnreadMails(response.data);
       })
       .catch((error) => {
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        console.log(error);
-        // TODO: NilS error objesi?
-        if (error && error.data) {
-          console.log(t(error.data.message));
-        }
       });
   }, [lastUnreadMails.length]);
 

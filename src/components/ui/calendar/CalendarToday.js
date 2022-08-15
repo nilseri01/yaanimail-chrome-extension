@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { showErrorToast } from '../../../actions/toast';
 import CalendarService from '../../../services/CalendarService';
 import { Spinner, Card, Badge } from 'react-bootstrap';
 import Linkify from 'linkify-react';
@@ -39,7 +40,6 @@ const formatEvents = (appointments) => {
     const endDate = new Date(appointment.end_date);
     const isLongEvent = checkIsLongEvent(appointment);
     let formattedAppointment;
-    // TODO: NilS location (linkli)
     if (isLongEvent) {
       formattedAppointment = {
         title: appointment.subject,
@@ -67,6 +67,8 @@ const formatEvents = (appointments) => {
 function CalendarToday(props) {
   moment.locale(props.language);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [todaysAppointments, setTodaysAppointments] = useState([]);
 
@@ -81,16 +83,17 @@ function CalendarToday(props) {
     setIsLoading(true);
     CalendarService.getEvents(data)
       .then((response) => {
-        setIsLoading(false);
         setTodaysAppointments(formatEvents(response.data));
       })
       .catch((error) => {
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        console.log(error);
-        // TODO: NilS error objesi?
-        if (error && error.data) {
-          console.log(t(error.data.message));
-        }
       });
   };
 
@@ -153,12 +156,13 @@ function CalendarToday(props) {
   );
 }
 
-function mapStateToProps({ authedUser }) {
+function mapStateToProps({ authedUser, toast }) {
   return {
     language:
       authedUser && (authedUser.language || '').length > 0
         ? authedUser.language
-        : 'tr'
+        : 'tr',
+    toastInfo: toast
   };
 }
 

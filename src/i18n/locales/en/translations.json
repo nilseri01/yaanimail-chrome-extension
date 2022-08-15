@@ -17,5 +17,7 @@
   "ALL_DAY": "All day",
   "ADD_ATTENDEE": "Add attendees",
   "ADD_LOCATION": "Add location",
-  "BUTTON_SAVE_EVENT": "Send"
+  "BUTTON_SAVE_EVENT": "Send",
+  "SUCCESS_APPOINTMENT_CREATED": "Appointment has been created",
+  "ERR_UNKNOWN_ERROR_HAS_OCCURED": "Bilinmeyen bir hata oluştu"
 }

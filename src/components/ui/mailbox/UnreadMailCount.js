@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import { showErrorToast } from '../../../actions/toast';
 import classes from './Mailbox.module.css';
 import MailboxService from '../../../services/MailboxService';
 import { Button, Badge, Spinner } from 'react-bootstrap';
@@ -12,6 +14,8 @@ const handleRouteToInbox = () => {
 
 function UnreadMailCount() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [unreadEmailCount, setUnreadEmailCount] = useState(0);
 
@@ -27,7 +31,6 @@ function UnreadMailCount() {
     setIsLoading(true);
     MailboxService.getAllFolders()
       .then((response) => {
-        setIsLoading(false);
         let inbox = response.data.filter((f) => f.id == 2);
         let unreadCount = inbox && inbox.length > 0 ? inbox[0].unread : 0;
         setUnreadEmailCount(unreadCount);
@@ -40,13 +43,15 @@ function UnreadMailCount() {
         }
       })
       .catch((error) => {
-        setIsLoading(false);
         chrome.action.setBadgeText({ text: '' });
-        console.log(error);
-        // TODO: NilS error objesi?
-        if (error && error.data) {
-          console.log(t(error.data.message));
-        }
+        dispatch(
+          showErrorToast(
+            t(error?.data?.message, t('ERR_UNKNOWN_ERROR_HAS_OCCURED'))
+          )
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -76,4 +81,10 @@ function UnreadMailCount() {
   );
 }
 
-export default UnreadMailCount;
+function mapStateToProps({ toast }) {
+  return {
+    toastInfo: toast
+  };
+}
+
+export default connect(mapStateToProps)(UnreadMailCount);

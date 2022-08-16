@@ -23,7 +23,6 @@ class HttpHeadersService {
   };
 
   static getAuthHeaders = () => {
-    // TODO: NilS logout case'i handle et
     return Promise.all([this.getUserToken(), this.getDeviceId()])
       .then((values) => {
         if (values.length == 2) {

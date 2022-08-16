@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 const handleRouteToInbox = () => {
   chrome.tabs.create({
-    url: 'https://kurumsal.yaanimail.com'
+    url: process.env.REACT_APP_WEB_URL
   });
 };
 

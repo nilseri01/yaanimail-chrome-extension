@@ -22,7 +22,7 @@ function LastUnreadMails(props) {
 
   // url: chrome.runtime.getURL('https://www.google.com/')
   const handleRouteToMail = (emailId) => {
-    let emailUrl = `https://yaanimail.turkcell.com.tr/m/${props.accountMail}/PRIMARY/inbox/single/${emailId}/details`;
+    let emailUrl = `${process.env.REACT_APP_WEB_URL}/m/${props.accountMail}/PRIMARY/inbox/single/${emailId}/details`;
     chrome.tabs.create(
       {
         url: emailUrl

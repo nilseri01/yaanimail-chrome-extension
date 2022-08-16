@@ -23,5 +23,17 @@
   "ERR_USERNAME_OR_PASSWORD_WRONG": "Username or password is wrong. Please check and try again",
   "GLOBAL_ADDRESS_LIST": "Global Address List",
   "MY_CONTACTS": "Contacts",
-  "SEARCH": "Search"
+  "SEARCH": "Search",
+  "EMAIL": "E-mail",
+  "OTHER_EMAIL": "Other E-mail",
+  "MOBILE": "Mobile",
+  "HOME": "Home",
+  "WORK": "Work",
+  "OTHER": "Other",
+  "JOB_TITLE": "Job Title",
+  "COMPANY": "Company",
+  "DEPARTMENT": "Department",
+  "GROUP": "Group",
+  "MANAGER": "Manager",
+  "NOTES": "Notes"
 }

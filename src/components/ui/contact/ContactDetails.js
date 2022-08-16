@@ -1,9 +1,22 @@
 import { connect, useDispatch } from 'react-redux';
 import { Modal, Button, Container, Row, Col } from 'react-bootstrap';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import 'moment/locale/tr';
 import { useTranslation } from 'react-i18next';
 import classes from './Contact.module.css';
+
+const handleMailTo = (email) => {
+  let emailUrl = `mailto:${email}`;
+  chrome.tabs.create(
+    {
+      url: emailUrl
+    },
+    function (tab) {
+      setTimeout(function () {
+        chrome.tabs.remove(tab.id);
+      }, 500);
+    }
+  );
+};
 
 function ContactDetails(props) {
   const { t } = useTranslation();
@@ -18,81 +31,169 @@ function ContactDetails(props) {
       animation={false}
     >
       <Modal.Header closeButton>
-        <Modal.Title>
+        <Modal.Title className="text-truncate">
           {contactDetails.fullname ? contactDetails.fullname : ''}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={classes.contact_details_container}>
         <Container>
-          <Row>
-            <Col xs={4}>EMAIL</Col>
-            <Col xs={{ offset: 1 }}>{contactDetails.email}</Col>
-            {contactDetails.other_email && (
-              <Col>{contactDetails.other_email}</Col>
-            )}
-          </Row>
+          {contactDetails.email && (
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('EMAIL')}
+              </Col>
+              {contactDetails.email && (
+                <Col className="text-truncate">
+                  <Button
+                    variant="link"
+                    className={`ps-1 ${classes.link_button}`}
+                    onClick={() => handleMailTo(contactDetails.email)}
+                  >
+                    {contactDetails.email}
+                  </Button>
+                </Col>
+              )}
+            </Row>
+          )}
+          {contactDetails.other_email && (
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('OTHER_EMAIL')}
+              </Col>
+              <Col className="text-truncate">
+                <Button
+                  variant="link"
+                  className={`ps-1 ${classes.link_button}`}
+                  onClick={() => handleMailTo(contactDetails.other_email)}
+                >
+                  {contactDetails.other_email}
+                </Button>
+              </Col>
+            </Row>
+          )}
           {contactDetails.phone?.mobile &&
             contactDetails.phone.mobile?.map((phone) => {
-              <Row>
-                <Col xs={4}>MOBILE</Col>
-                <Col xs={{ offset: 1 }}>{phone}</Col>
+              <Row className="align-items-center">
+                <Col xs={4} className="text-truncate">
+                  {t('MOBILE')}
+                </Col>
+                <Col className="text-truncate">{phone}</Col>
               </Row>;
             })}
           {contactDetails.phone?.work &&
             contactDetails.phone.work?.map((phone) => {
-              <Row>
-                <Col xs={4}>WORK</Col>
-                <Col xs={{ offset: 1 }}>{phone}</Col>
+              <Row className="align-items-center">
+                <Col xs={4} className="text-truncate">
+                  {t('WORK')}
+                </Col>
+                <Col className="text-truncate">{phone}</Col>
               </Row>;
             })}
           {contactDetails.phone?.home &&
             contactDetails.phone.home?.map((phone) => {
-              <Row>
-                <Col xs={4}>HOME</Col>
-                <Col xs={{ offset: 1 }}>{phone}</Col>
+              <Row className="align-items-center">
+                <Col xs={4} className="text-truncate">
+                  {t('HOME')}
+                </Col>
+                <Col className="text-truncate">{phone}</Col>
+              </Row>;
+            })}
+          {contactDetails.phone?.other &&
+            contactDetails.phone.other?.map((phone) => {
+              <Row className="align-items-center">
+                <Col xs={4} className="text-truncate">
+                  {t('OTHER')}
+                </Col>
+                <Col className="text-truncate">{phone}</Col>
               </Row>;
             })}
           {contactDetails.job_title && (
-            <Row>
-              <Col xs={4}>JOB_TITLE</Col>
-              <Col xs={{ offset: 1 }}>{contactDetails.job_title}</Col>
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('JOB_TITLE')}
+              </Col>
+              <Col className="text-truncate">{contactDetails.job_title}</Col>
             </Row>
           )}
           {contactDetails.company && (
-            <Row>
-              <Col xs={4}>COMPANY</Col>
-              <Col xs={{ offset: 1 }}>{contactDetails.company}</Col>
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('COMPANY')}
+              </Col>
+              <Col className="text-truncate">{contactDetails.company}</Col>
             </Row>
           )}
           {contactDetails.department && (
-            <Row>
-              <Col xs={4}>DEPARTMENT</Col>
-              <Col xs={{ offset: 1 }}>{contactDetails.department}</Col>
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('DEPARTMENT')}
+              </Col>
+              <Col className="text-truncate">{contactDetails.department}</Col>
             </Row>
           )}
           {contactDetails.group && (
-            <Row>
-              <Col xs={4}>GROUP</Col>
-              <Col xs={{ offset: 1 }}>{contactDetails.group}</Col>
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('GROUP')}
+              </Col>
+              <Col className="text-truncate">{contactDetails.group}</Col>
             </Row>
           )}
           {contactDetails.manager && (
-            <Row>
-              <Col xs={4}>MANAGER</Col>
-              <Col xs={{ offset: 1 }}>{contactDetails.manager}</Col>
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('MANAGER')}
+              </Col>
+              <Col className="text-truncate">{contactDetails.manager}</Col>
             </Row>
           )}
-          {contactDetails.extensions_attributes &&
-            contactDetails.extensions_attributes.home?.map((attribute) => {
-              <Row>
-                <Col xs={4}>{attribute.name}</Col>
-                <Col xs={{ offset: 1 }}>{attribute.value}</Col>
-              </Row>;
-            })}
+          {contactDetails.extensions_attributes?.map((attribute) => {
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {attribute.name}
+              </Col>
+              <Col className="text-truncate">{attribute.value}</Col>
+            </Row>;
+          })}
+          {contactDetails.addresses?.home?.map((address) => {
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('HOME')}
+              </Col>
+              <Col className="text-truncate">
+                {address.street} {address.state} {address.postalcode}{' '}
+                {address.city}
+              </Col>
+            </Row>;
+          })}
+          {contactDetails.addresses?.work?.map((address) => {
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('WORK')}
+              </Col>
+              <Col className="text-truncate">
+                {address.street} {address.state} {address.postalcode}{' '}
+                {address.city}
+              </Col>
+            </Row>;
+          })}
+          {contactDetails.addresses?.other?.map((address) => {
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('OTHER')}
+              </Col>
+              <Col className="text-truncate">
+                {address.street} {address.state} {address.postalcode}{' '}
+                {address.city}
+              </Col>
+            </Row>;
+          })}
           {contactDetails.notes && (
-            <Row>
-              <Col xs={4}>NOTES</Col>
-              <Col xs={{ offset: 1 }}>{contactDetails.notes}</Col>
+            <Row className="align-items-center">
+              <Col xs={4} className="text-truncate">
+                {t('NOTES')}
+              </Col>
+              <Col className="text-truncate">{contactDetails.notes}</Col>
             </Row>
           )}
         </Container>

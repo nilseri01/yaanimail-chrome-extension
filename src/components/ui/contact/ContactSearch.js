@@ -13,6 +13,20 @@ import ContactDetails from './ContactDetails';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard } from '@fortawesome/free-regular-svg-icons';
 
+const handleMailTo = (email) => {
+  let emailUrl = `mailto:${email}`;
+  chrome.tabs.create(
+    {
+      url: emailUrl
+    },
+    function (tab) {
+      setTimeout(function () {
+        chrome.tabs.remove(tab.id);
+      }, 500);
+    }
+  );
+};
+
 function ContactSearch() {
   let cancelToken;
   const { t } = useTranslation();
@@ -32,20 +46,6 @@ function ContactSearch() {
   const handleShowDetails = (contactToShow) => {
     setContactDetails(contactToShow);
     setShowDetails(true);
-  };
-
-  const handleMailTo = (email) => {
-    let emailUrl = `mailto:${email}`;
-    chrome.tabs.create(
-      {
-        url: emailUrl
-      },
-      function (tab) {
-        setTimeout(function () {
-          chrome.tabs.remove(tab.id);
-        }, 500);
-      }
-    );
   };
 
   const getMyContactFilter = () => {
@@ -124,25 +124,29 @@ function ContactSearch() {
   };
 
   const setSearchKeyword = (keyword) => {
+    setIsAppended(false);
     setQuery(keyword);
     setPage(1);
     setOffset(0);
+    setIsAppended(false);
   };
 
   const handleSearch = (type) => {
+    setIsAppended(false);
     setContactType(type);
     setPage(1);
     setOffset(0);
   };
 
-  useEffect(() => {
-    search();
-  }, [query, contactType, page, offset, isAppended]);
-
   const fetchMoreContacts = () => {
+    setIsAppended(true);
     setOffset(contacts.length + 5);
     setPage(page + 1);
   };
+
+  useEffect(() => {
+    search();
+  }, [query, contactType, page, offset, isAppended]);
 
   return (
     <Fragment>
@@ -151,10 +155,10 @@ function ContactSearch() {
           bg="light"
           variant="light"
           fixed="bottom"
-          className={classes.border_top_primary}
+          className={classes.search_contacts_navbar}
         >
           <Form.Group
-            className={`d-flex flex-row py-1 px-1 ${classes.border_top_primary}`}
+            className="d-flex flex-row py-1 px-1"
             controlId="formContactSearch"
           >
             <Form.Select

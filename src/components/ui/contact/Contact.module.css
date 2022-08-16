@@ -2,21 +2,18 @@
   height: 70vh !important;
 }
 
-.border_top_primary {
-  border-top: 1px solid #5bc8ec;
-}
-
 .link_button {
   --bs-btn-focus-shadow-rgb: transparent;
 }
 
 .search_contacts_navbar {
   height: 50px;
+  border-top: 1px solid #5bc8ec;
 }
 
 .contacts_list_container {
   height: 350px;
-  overflow-x: scroll;
+  overflow: scroll;
 }
 
 .contact_details_container {

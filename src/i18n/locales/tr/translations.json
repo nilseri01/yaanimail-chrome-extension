@@ -23,5 +23,17 @@
   "ERR_USERNAME_OR_PASSWORD_WRONG": "E-posta adresi veya şifre hatalı.",
   "GLOBAL_ADDRESS_LIST": "Global Adres Listesi",
   "MY_CONTACTS": "Kişilerim",
-  "SEARCH": "Ara"
+  "SEARCH": "Ara",
+  "EMAIL": "E-posta",
+  "OTHER_EMAIL": "Diğer E-posta",
+  "MOBILE": "Cep",
+  "HOME": "Ev",
+  "WORK": "İş",
+  "OTHER": "Diğer",
+  "JOB_TITLE": "Ünvan",
+  "COMPANY": "Şirket",
+  "DEPARTMENT": "Bölüm",
+  "GROUP": "Ekip",
+  "MANAGER": "Yönetici",
+  "NOTES": "Notlar"
 }

@@ -86,7 +86,7 @@ function Login() {
               variant="primary"
               className="float-end"
               type="submit"
-              disabled="isLoading"
+              disabled={isLoading}
             >
               {t('LOGIN')}
             </Button>

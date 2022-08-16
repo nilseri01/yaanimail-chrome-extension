@@ -14,3 +14,7 @@
   height: 360px;
   overflow: scroll;
 }
+
+input::placeholder {
+  font-size: 1rem;
+}

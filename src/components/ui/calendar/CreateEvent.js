@@ -3,7 +3,15 @@ import { connect, useDispatch } from 'react-redux';
 import { showSuccessToast, showErrorToast } from '../../../actions/toast';
 import ContactService from '../../../services/ContactService';
 import CalendarService from '../../../services/CalendarService';
-import { Form, Modal, Button, Container, Navbar } from 'react-bootstrap';
+import {
+  Form,
+  Modal,
+  Button,
+  Container,
+  Navbar,
+  Row,
+  Col
+} from 'react-bootstrap';
 import moment from 'moment/moment.js';
 import 'moment/locale/tr';
 import { useTranslation } from 'react-i18next';
@@ -122,7 +130,7 @@ function CreateEvent(props) {
     return eventData;
   };
 
-  const createEvent = () => {
+  const handleSubmit = () => {
     let eventData = prepareEventData();
 
     setIsLoading(true);
@@ -160,48 +168,49 @@ function CreateEvent(props) {
         </Container>
       </Navbar>
       <Modal show={show} onHide={handleCloseCreateEventModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t('CREATE_EVENT')}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group
-              className="mb-3 d-flex flex-row align-items-center"
-              controlId="createEventForm.title"
-            >
-              <FontAwesomeIcon
-                icon={faBookmark}
-                className="text-primary pe-2"
-              />
-              <Form.Control
-                type="input"
-                className="flex-grow-1"
-                placeholder={t('ADD_TITLE')}
-                value={eventTitle}
-                onChange={(e) => setEventTitle(e.target.value)}
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3 d-flex flex-row align-items-center"
-              controlId="createEventForm.date"
-            >
-              <FontAwesomeIcon icon={faClock} className="text-primary pe-2" />
-              <DatetimeRangePicker
-                className="flex-grow-1"
-                dateFormat="DD-MM-YYYY"
-                timeFormat="HH:mm"
-                locale={moment.locale()}
-                onStartDateChange={onStartDateChange}
-                onEndDateChange={onEndDateChange}
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3 d-flex flex-row align-items-center"
-              controlId="createEventForm.attendees"
-            >
-              <FontAwesomeIcon icon={faUser} className="text-primary pe-2" />
-              <div className="flex-grow-1">
+        <Form onSubmit={handleSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title>{t('CREATE_EVENT')}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row className="align-items-center pb-3">
+              <Col xs={1}>
+                <FontAwesomeIcon
+                  icon={faBookmark}
+                  className="text-primary pe-2"
+                />
+              </Col>
+              <Col>
+                <Form.Control
+                  type="input"
+                  className="flex-grow-1"
+                  placeholder={t('ADD_TITLE')}
+                  value={eventTitle}
+                  onChange={(e) => setEventTitle(e.target.value)}
+                  autoFocus
+                />
+              </Col>
+            </Row>
+            <Row className="align-items-center pb-3">
+              <Col xs={1}>
+                <FontAwesomeIcon icon={faClock} className="text-primary pe-2" />
+              </Col>
+              <Col>
+                <DatetimeRangePicker
+                  className="flex-grow-1"
+                  dateFormat="DD-MM-YYYY"
+                  timeFormat="HH:mm"
+                  locale={moment.locale()}
+                  onStartDateChange={onStartDateChange}
+                  onEndDateChange={onEndDateChange}
+                />
+              </Col>
+            </Row>
+            <Row className="align-items-center pb-3">
+              <Col xs={1}>
+                <FontAwesomeIcon icon={faUser} className="text-primary pe-2" />
+              </Col>
+              <Col>
                 <Chips
                   placeholder={t('ADD_ATTENDEE')}
                   value={attendees}
@@ -210,31 +219,32 @@ function CreateEvent(props) {
                   onChange={handleAttendeesChange}
                   fetchSuggestions={fetchAttendeeSuggestions}
                 />
-              </div>
-            </Form.Group>
-            <Form.Group
-              className="mb-3 d-flex flex-row align-items-center"
-              controlId="createEventForm.location"
-            >
-              <FontAwesomeIcon icon={faMap} className="text-primary pe-2" />
-              <Form.Control
-                type="input"
-                className="flex-grow-1"
-                placeholder={t('ADD_LOCATION')}
-                value={eventLocation}
-                onChange={(e) => setEventLocation(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseCreateEventModal}>
-            {t('BUTTON_CLOSE')}
-          </Button>
-          <Button variant="primary" onClick={createEvent} disabled={isLoading}>
-            {t('BUTTON_SAVE_EVENT')}
-          </Button>
-        </Modal.Footer>
+              </Col>
+            </Row>
+            <Row className="align-items-center pb-3">
+              <Col xs={1}>
+                <FontAwesomeIcon icon={faMap} className="text-primary pe-2" />
+              </Col>
+              <Col>
+                <Form.Control
+                  type="input"
+                  className="flex-grow-1"
+                  placeholder={t('ADD_LOCATION')}
+                  value={eventLocation}
+                  onChange={(e) => setEventLocation(e.target.value)}
+                />
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseCreateEventModal}>
+              {t('BUTTON_CLOSE')}
+            </Button>
+            <Button variant="primary" type="submit" disabled={isLoading}>
+              {t('BUTTON_SAVE_EVENT')}
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </Fragment>
   );

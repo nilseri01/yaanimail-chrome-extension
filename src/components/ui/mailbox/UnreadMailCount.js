@@ -77,10 +77,4 @@ function UnreadMailCount() {
   );
 }
 
-function mapStateToProps({ toast }) {
-  return {
-    toastInfo: toast
-  };
-}
-
-export default connect(mapStateToProps)(UnreadMailCount);
+export default connect()(UnreadMailCount);

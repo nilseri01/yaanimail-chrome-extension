@@ -152,13 +152,12 @@ function CalendarToday(props) {
   );
 }
 
-function mapStateToProps({ authedUser, toast }) {
+function mapStateToProps({ authedUser }) {
   return {
     language:
       authedUser && (authedUser.language || '').length > 0
         ? authedUser.language
-        : 'tr',
-    toastInfo: toast
+        : 'tr'
   };
 }
 

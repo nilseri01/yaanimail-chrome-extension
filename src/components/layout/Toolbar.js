@@ -5,7 +5,11 @@ import UtilsService from '../../services/UtilsService';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 import classes from './Toolbar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCalendar,
+  faEnvelope,
+  faAddressBook
+} from '@fortawesome/free-solid-svg-icons';
 import { faSmile } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment/moment.js';
 import 'moment/locale/tr';
@@ -38,7 +42,7 @@ function Toolbar(props) {
         </div>
         <div>{moment(new Date()).format('DD-MM-YYYY dddd')}</div>
       </div>
-      <div className="d-flex flex-row me-1">
+      <div className="d-flex flex-grow-1 justify-content-end me-1">
         <div className="me-1">
           <Button
             variant={props.selectedView === 'inbox' ? 'secondary' : 'primary'}
@@ -50,7 +54,7 @@ function Toolbar(props) {
             <FontAwesomeIcon icon={faEnvelope} />
           </Button>
         </div>
-        <div>
+        <div className="me-1">
           <Button
             variant={
               props.selectedView === 'calendar' ? 'secondary' : 'primary'
@@ -60,6 +64,16 @@ function Toolbar(props) {
             onClick={() => handleChangeView('calendar')}
           >
             <FontAwesomeIcon icon={faCalendar} />
+          </Button>
+        </div>
+        <div>
+          <Button
+            variant={props.selectedView === 'contact' ? 'secondary' : 'primary'}
+            className="rounded-circle"
+            disabled={props.selectedView === 'contact'}
+            onClick={() => handleChangeView('contact')}
+          >
+            <FontAwesomeIcon icon={faAddressBook} />
           </Button>
         </div>
       </div>

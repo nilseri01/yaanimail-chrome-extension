@@ -82,7 +82,12 @@ function Login() {
             />
           </InputGroup>
           <div>
-            <Button variant="primary" className="float-end" type="submit">
+            <Button
+              variant="primary"
+              className="float-end"
+              type="submit"
+              disabled="isLoading"
+            >
               {t('LOGIN')}
             </Button>
           </div>
@@ -98,10 +103,4 @@ function Login() {
   );
 }
 
-function mapStateToProps({ toast }) {
-  return {
-    toastInfo: toast
-  };
-}
-
-export default connect(mapStateToProps)(Login);
+export default connect()(Login);

@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { showSuccessToast, showErrorToast } from '../../../actions/toast';
 import ContactService from '../../../services/ContactService';
 import CalendarService from '../../../services/CalendarService';
-import { Form, Modal, Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { Form, Modal, Button, Container, Navbar } from 'react-bootstrap';
 import moment from 'moment/moment.js';
 import 'moment/locale/tr';
 import { useTranslation } from 'react-i18next';
@@ -129,7 +129,6 @@ function CreateEvent(props) {
     CalendarService.createAppointment(eventData)
       .then((response) => {
         props.setRefreshRequired(true);
-        // TODO: NilS created info göster kullanıcıya
         setShow(false);
         dispatch(showSuccessToast(t('SUCCESS_APPOINTMENT_CREATED')));
       })

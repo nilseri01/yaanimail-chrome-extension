@@ -37,10 +37,4 @@ function Logout() {
   );
 }
 
-function mapStateToProps({ toast }) {
-  return {
-    toastInfo: toast
-  };
-}
-
-export default connect(mapStateToProps)(Logout);
+export default connect()(Logout);

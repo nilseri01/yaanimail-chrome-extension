@@ -83,7 +83,6 @@ function LastUnreadMails(props) {
         // reload mails
         setLastUnreadMails(lastUnreadMails.filter((m) => m.id !== emailId));
         updateUnreadCount();
-        // TODO: NilS buradan silince service worker trigger et
       })
       .catch((error) => {
         dispatch(showErrorToast(error?.message));

@@ -130,7 +130,8 @@ function CreateEvent(props) {
     return eventData;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     let eventData = prepareEventData();
 
     setIsLoading(true);

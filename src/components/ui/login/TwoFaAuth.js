@@ -32,7 +32,7 @@ function TwoFaAuth(props) {
     }
   };
 
-  const sendTwoFaPassword = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     let twoFaInfo = {
       code: props.twoFaUuid,
@@ -60,11 +60,13 @@ function TwoFaAuth(props) {
 
   return (
     <Modal show={props.isTwoFaRequired}>
-      <Modal.Header closeButton>
-        <Modal.Title className="text-primary">{t('TWO_FA_HEADER')}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="h-200">
-        <Form>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-primary">
+            {t('TWO_FA_HEADER')}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="h-200">
           <Form.Group controlId="twoFaCode">
             <Form.Control
               as="input"
@@ -90,20 +92,16 @@ function TwoFaAuth(props) {
               />
             </div>
           </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          {t('BUTTON_CLOSE')}
-        </Button>
-        <Button
-          variant="primary"
-          onClick={sendTwoFaPassword}
-          disabled={isLoading}
-        >
-          {t('BUTTON_CONTINUE')}
-        </Button>
-      </Modal.Footer>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            {t('BUTTON_CLOSE')}
+          </Button>
+          <Button variant="primary" type="submit" disabled={isLoading}>
+            {t('BUTTON_CONTINUE')}
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

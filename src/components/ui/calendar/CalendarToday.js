@@ -102,7 +102,7 @@ function CalendarToday(props) {
       {isLoading ? (
         <div className="container h-100">
           <div
-            className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
+            className={`d-flex justify-content-center align-items-center ${classes.vh60}`}
           >
             <Spinner animation="border" variant="info" />
           </div>
@@ -139,7 +139,7 @@ function CalendarToday(props) {
       {!isLoading && (!todaysAppointments || todaysAppointments.length === 0) && (
         <div className="container h-100">
           <div
-            className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
+            className={`d-flex justify-content-center align-items-center ${classes.vh60}`}
           >
             <img src={iconMail} alt="Login" className="not-found-image" />
           </div>

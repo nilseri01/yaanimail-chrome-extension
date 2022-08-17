@@ -15,7 +15,7 @@ function CalendarContainer(props) {
       ) : (
         <div className="container h-100">
           <div
-            className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
+            className={`d-flex justify-content-center align-items-center ${classes.vh60}`}
           >
             <img
               src={iconCalendar}

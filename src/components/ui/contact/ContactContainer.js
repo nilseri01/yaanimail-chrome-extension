@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import classes from './Contact.module.css';
-import iconMail from '../../../assets/img/icon-mail.png';
+import iconContact from '../../../assets/img/icon-contact.png';
 import ContactSearch from './ContactSearch';
 
 function ContactContainer(props) {
@@ -12,9 +12,13 @@ function ContactContainer(props) {
       ) : (
         <div className="container h-100">
           <div
-            className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
+            className={`d-flex justify-content-center align-items-center ${classes.vh60}`}
           >
-            <img src={iconMail} alt="Login" className="not-found-image" />
+            <img
+              src={iconContact}
+              alt="no-contact"
+              className="not-found-image"
+            />
           </div>
         </div>
       )}

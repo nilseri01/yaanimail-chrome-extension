@@ -1,7 +1,7 @@
 {
   "name": "YaaniMail Turkcell Chrome Extension",
   "description": "YaaniMail Turkcell Chrome Extension",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 3,
   "host_permissions": ["https://ymapi.turkcell.com.tr/*"],
   "permissions": ["storage", "notifications", "alarms"],

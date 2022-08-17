@@ -8,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import 'moment/locale/tr';
 import { useTranslation } from 'react-i18next';
 import classes from './Contact.module.css';
-import iconMail from '../../../assets/img/icon-mail.png';
+import iconContact from '../../../assets/img/icon-contact.png';
 import ContactDetails from './ContactDetails';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard } from '@fortawesome/free-regular-svg-icons';
@@ -180,7 +180,7 @@ function ContactSearch() {
         {isLoading ? (
           <div className="container h-100">
             <div
-              className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
+              className={`d-flex justify-content-center align-items-center ${classes.vh60}`}
             >
               <Spinner animation="border" variant="info" />
             </div>
@@ -236,12 +236,16 @@ function ContactSearch() {
         {!isLoading && (!contacts || contacts.length === 0) && (
           <div className="container h-100">
             <div
-              className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
+              className={`d-flex justify-content-center align-items-center ${classes.vh60}`}
             >
-              <img src={iconMail} alt="Login" className="not-found-image" />
+              <img
+                src={iconContact}
+                alt="no-contact"
+                className="not-found-image"
+              />
             </div>
             <p class="text-center text-primary fw-bold fs-6">
-              {t('NO_APPOINTMENTS_TODAY')}
+              {t('NO_CONTACTS')}
             </p>
           </div>
         )}

@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import CalendarToday from './CalendarToday';
 import classes from './Calendar.module.css';
-import iconMail from '../../../assets/img/icon-mail.png';
+import iconCalendar from '../../../assets/img/icon-calendar.svg';
 import CreateEvent from './CreateEvent';
 
 function CalendarContainer(props) {
@@ -17,7 +17,11 @@ function CalendarContainer(props) {
           <div
             className={`d-flex justify-content-center align-items-center ${classes.vh70}`}
           >
-            <img src={iconMail} alt="Login" className="not-found-image" />
+            <img
+              src={iconCalendar}
+              alt="no-events"
+              className="not-found-image"
+            />
           </div>
         </div>
       )}

@@ -35,5 +35,6 @@
   "DEPARTMENT": "Department",
   "GROUP": "Group",
   "MANAGER": "Manager",
-  "NOTES": "Notes"
+  "NOTES": "Notes",
+  "NO_CONTACTS": "No contacts found"
 }

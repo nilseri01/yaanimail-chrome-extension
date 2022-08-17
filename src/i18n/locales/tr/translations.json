@@ -35,5 +35,6 @@
   "DEPARTMENT": "Bölüm",
   "GROUP": "Ekip",
   "MANAGER": "Yönetici",
-  "NOTES": "Notlar"
+  "NOTES": "Notlar",
+  "NO_CONTACTS": "Kontak bulunamadı"
 }
